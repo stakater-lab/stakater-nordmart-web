@@ -10,5 +10,7 @@ ENV PATH /usr/src/app/node_modules/.bin:$PATH
 
 COPY . /usr/src/app/
 
+RUN npm install
+
 # start app
 CMD ["npm", "start"]
