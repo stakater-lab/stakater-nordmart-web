@@ -8,6 +8,7 @@ releaseNodeApplication {
     gitEmail = "stakater@gmail.com"
     usePersonalAccessToken = true
     deployManifest = true
+    namespace = "coolstore"
     tokenCredentialID = 'GithubToken'
     dockerRepositoryURL = 'docker.release.stakater.com:443'
     podVolumes = [
