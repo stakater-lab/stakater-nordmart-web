@@ -10,7 +10,5 @@ ENV PATH /usr/src/app/node_modules/.bin:$PATH
 
 COPY . /usr/src/app/
 
-RUN npm run build
-
 # start app
-CMD ["npm", "run", "serve"]
+CMD ["npm", "start"]
