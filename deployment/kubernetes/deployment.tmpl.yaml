@@ -1,0 +1,30 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    group: com.stakater.platform
+    provider: stakater
+    version: 0.0.1
+  name: web
+  namespace: {NAMESPACE}
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: web
+    spec:
+      imagePullSecrets:
+      - name: docker-nexus-registry-secret
+      containers:
+      - name: web
+        image: "{IMAGE}"
+        env:
+        - name: PORT
+          value: "4200"
+        # - name: SSO_URL
+        #   value: "https://keycloak.global.stakater.com"
+        - name: COOLSTORE_GW_ENDPOINT
+          value: "gateway.coolstore:8080"
+        ports:
+        - containerPort: 4200
