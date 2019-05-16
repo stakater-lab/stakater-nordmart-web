@@ -11,3 +11,24 @@
 [x-ng-click] {
 	cursor: pointer;
 }
+
+.navbar-pf {
+	background: #fe9b07;
+	border-top: 0px;
+}
+
+.navbar-brand {
+	display: flex;
+	align-items: center;
+}
+
+.navbar-title {
+	font-size: 32px;
+    margin-left: 10px;
+    font-weight: 600;
+}
+
+.navbar-pf .navbar-utility>li>a {
+	color: #ffffff !important;
+	font-weight: 600;
+}
