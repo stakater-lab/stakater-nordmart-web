@@ -32,6 +32,11 @@ app.get('/coolstore.json', function(req, res, next) {
     res.json(coolstoreConfig);
 });
 
+// health Check
+app.get('/health', function(req, res, next) {
+    res.status(200).send('{"STATUS" : "UP"}')
+});
+
 app.use(express.static(path.join(__dirname, '/views')));
 app.use('/app', express.static(path.join(__dirname, '/app')));
 app.use('/bower_components', express.static(path.join(__dirname, '/bower_components')));
