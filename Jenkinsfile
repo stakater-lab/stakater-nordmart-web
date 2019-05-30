@@ -8,8 +8,6 @@ releaseNodeApplication {
     gitEmail = "stakater@gmail.com"
     usePersonalAccessToken = true
     tokenCredentialID = 'GithubToken'
-    dockerRepositoryURL = 'docker.release.stakater.com:443'
-    podVolumes = [
-        additionalSecretVolumes: [[secretName: 'k8s-current-cluster-kubeconfig', mountPath: '/home/jenkins/.kube']]
-    ]
+    serviceAccount = "stakater-release-jenkins"
+    dockerRepositoryURL = 'docker-release.workshop.stakater.com:443'
 }
