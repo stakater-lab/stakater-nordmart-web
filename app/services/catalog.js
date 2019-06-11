@@ -6,10 +6,14 @@ angular.module("app")
 	var factory = {}, products, baseUrl;
 
 	if ($location.protocol() === 'https') {
-		baseUrl = (COOLSTORE_CONFIG.SECURE_API_ENDPOINT.startsWith("https://") ? COOLSTORE_CONFIG.SECURE_API_ENDPOINT : "https://" + COOLSTORE_CONFIG.SECURE_API_ENDPOINT + '.' + $location.host().replace(/^.*?\.(.*)/g,"$1")) + '/api/products';
+		baseUrl = (COOLSTORE_CONFIG.SECURE_API_ENDPOINT.startsWith("https://") ? COOLSTORE_CONFIG.SECURE_API_ENDPOINT : "https://" + COOLSTORE_CONFIG.SECURE_API_ENDPOINT + '.' + $location.host().replace(/^.*?\.(.*)/g,"$1")) + '/api/';
 	} else {
-		baseUrl = (COOLSTORE_CONFIG.API_ENDPOINT.startsWith("http://") ? COOLSTORE_CONFIG.API_ENDPOINT : "http://" + COOLSTORE_CONFIG.API_ENDPOINT + '.' + $location.host().replace(/^.*?\.(.*)/g,"$1")) + '/api/products';
-	}
+		baseUrl = (COOLSTORE_CONFIG.API_ENDPOINT.startsWith("http://") ? COOLSTORE_CONFIG.API_ENDPOINT : "http://" + COOLSTORE_CONFIG.API_ENDPOINT + '.' + $location.host().replace(/^.*?\.(.*)/g,"$1")) + '/api/';
+    }
+
+    factory.getBaseURL = function() {
+        return baseUrl;
+    }
 
 	factory.getProducts = function() {
 		var deferred = $q.defer();
@@ -18,7 +22,7 @@ angular.module("app")
         } else {
             $http({
                 method: 'GET',
-								url: baseUrl
+                url: baseUrl + 'products'
             }).then(function(resp) {
                 products = resp.data;
                 deferred.resolve(resp.data);

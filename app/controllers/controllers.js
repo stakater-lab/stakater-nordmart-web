@@ -27,6 +27,7 @@ angular.module('app')
                 };
 
 
+                $scope.baseURL = catalog.getBaseURL();
                 // initialize products
                 catalog.getProducts().then(function (data) {
                     if (data.error != undefined && data.error != "") {
