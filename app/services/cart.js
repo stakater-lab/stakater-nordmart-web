@@ -3,18 +3,24 @@
 angular.module("app")
 
 .factory('cart', ['$http', '$q', 'COOLSTORE_CONFIG', 'Auth', '$location', function($http, $q, COOLSTORE_CONFIG, $auth, $location) {
-	var factory = {}, cart, products, cartId, baseUrl;
+	var factory = {}, cart, products, cartId, baseUrl, cartBaseUrl;
 	if ($location.protocol() === 'https') {
-		baseUrl = (COOLSTORE_CONFIG.SECURE_API_ENDPOINT.startsWith("https://") ? COOLSTORE_CONFIG.SECURE_API_ENDPOINT : "https://" + COOLSTORE_CONFIG.SECURE_API_ENDPOINT + '.' + $location.host().replace(/^.*?\.(.*)/g,"$1")) + '/api/cart';
+		baseUrl = (COOLSTORE_CONFIG.SECURE_API_ENDPOINT.startsWith("https://") ? COOLSTORE_CONFIG.SECURE_API_ENDPOINT : "https://" + COOLSTORE_CONFIG.SECURE_API_ENDPOINT + '.' + $location.host().replace(/^.*?\.(.*)/g,"$1")) + '/api/';
 	} else {
-		baseUrl = (COOLSTORE_CONFIG.API_ENDPOINT.startsWith("http://") ? COOLSTORE_CONFIG.API_ENDPOINT : "http://" + COOLSTORE_CONFIG.API_ENDPOINT + '.' + $location.host().replace(/^.*?\.(.*)/g,"$1")) + '/api/cart';
+		baseUrl = (COOLSTORE_CONFIG.API_ENDPOINT.startsWith("http://") ? COOLSTORE_CONFIG.API_ENDPOINT : "http://" + COOLSTORE_CONFIG.API_ENDPOINT + '.' + $location.host().replace(/^.*?\.(.*)/g,"$1")) + '/api/';
 	}
+
+	factory.getBaseURL = function() {
+		return baseUrl;
+	}
+
+	cartBaseUrl = baseUrl + 'cart/'
 
 	factory.checkout = function() {
 		var deferred = $q.defer();
 		$http({
 			   method: 'POST',
-			   url: baseUrl + '/checkout/' + cartId
+			   url: cartBaseUrl + '/checkout/' + cartId
 		   }).then(function(resp) {
 			    cart = resp.data;
 			   	deferred.resolve(resp.data);
@@ -59,7 +65,7 @@ angular.module("app")
 		cart.shoppingCartItemList = [];
 		$http({
 			   method: 'GET',
-			   url: baseUrl + '/' + cartId
+			   url: cartBaseUrl + '/' + cartId
 		   }).then(function(resp) {
 			    cart = resp.data;
 		   }, function(err) {
@@ -75,7 +81,7 @@ angular.module("app")
 		var deferred = $q.defer();
 		$http({
 			method: 'DELETE',
-			url: baseUrl + '/' + cartId + '/' + product.itemId + '/' + quantity
+			url: cartBaseUrl + '/' + cartId + '/' + product.itemId + '/' + quantity
 		}).then(function(resp) {
 			cart = resp.data;
 			deferred.resolve(resp.data);
@@ -90,7 +96,7 @@ angular.module("app")
 		var deferred = $q.defer();
 		$http({
 			method: 'POST',
-			url: baseUrl + '/' + cartId + '/' + id
+			url: cartBaseUrl + '/' + cartId + '/' + id
 		}).then(function(resp) {
 			cart = resp.data;
 			deferred.resolve(resp.data);
@@ -105,7 +111,7 @@ angular.module("app")
 		var deferred = $q.defer();
 		$http({
 			   method: 'POST',
-			   url: baseUrl + '/' + cartId + '/' + product.itemId + '/' + quantity
+			   url: cartBaseUrl + '/' + cartId + '/' + product.itemId + '/' + quantity
 		   }).then(function(resp) {
 			    cart = resp.data;
 			   	deferred.resolve(resp.data);

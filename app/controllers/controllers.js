@@ -65,7 +65,8 @@ angular.module('app')
                     selectItems: false,
                     multiSelect: false,
                     dblClick: false,
-                    showSelectBox: false
+                    showSelectBox: false,
+                    baseURL: cart.getBaseURL()
                 };
 
                 function performAction(action, item) {
