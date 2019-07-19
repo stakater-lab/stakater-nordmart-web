@@ -4,7 +4,7 @@
 releaseApplication {
     appName = "web"
     appType = "node"
-    builderImage = "stakater/builder-builder-node-8:v0.0.2"
+    builderImage = "stakater/builder-node-8:v0.0.2"
     goal = "install"
     notifySlack = false
     runIntegrationTest = false
