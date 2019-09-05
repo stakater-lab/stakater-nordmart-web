@@ -1,5 +1,5 @@
 #!/usr/bin/env groovy
-@Library('github.com/stakater/stakater-pipeline-library@fix-release-app') _
+@Library('github.com/stakater/stakater-pipeline-library@v2.16.4') _
 
 releaseApplication {
     appName = "web"
