@@ -13,5 +13,5 @@ releaseApplication {
     usePersonalAccessToken = true
     tokenCredentialID = 'GithubToken'
     serviceAccount = "jenkins"
-    dockerRepositoryURL = 'docker.release.stakater.com:443'
+    dockerRepositoryURL = 'docker.delivery.stakater.com:443'
 }
