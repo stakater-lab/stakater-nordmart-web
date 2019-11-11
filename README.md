@@ -2,7 +2,7 @@
 
 ## Overview
 
-A node js web application
+A node js web application.
 
 It requires following things to be installed:
 
