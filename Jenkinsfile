@@ -6,7 +6,7 @@ releaseApplication {
     appType = "node"
     builderImage = "stakater/builder-node-8:v0.0.2"
     goal = "install"
-    notifySlack = false
+    notifySlack = true
     runIntegrationTest = false
     gitUser = "stakater-user"
     gitEmail = "stakater@gmail.com"
