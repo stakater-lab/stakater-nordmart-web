@@ -3,8 +3,8 @@
 angular.module('app')
 
     .controller("HomeController",
-        ['$scope', '$http', '$filter', 'Notifications', 'cart', 'catalog', 'Auth',
-            function ($scope, $http, $filter, Notifications, cart, catalog, $auth) {
+        ['$scope', '$http', '$filter', 'Notifications', 'cart', 'catalog', 'Auth', '$uibModal',
+            function ($scope, $http, $filter, Notifications, cart, catalog, $auth, $uibModal) {
 
                 $scope.products = [];
                 $scope.addToCart = function (item) {
@@ -44,7 +44,30 @@ angular.module('app')
                 });
 
 
+                // open dialog with product details
+                $scope.openProductDetails = function (product) {
+                    var modalInstance = $uibModal.open({
+                        templateUrl: 'product.html',
+                        controller: 'ProductModalController',
+                        resolve: {
+                            product: function () {
+                                return product;
+                            }
+                        }
+                    });
+                };
+
+
             }])
+
+    .controller("ProductModalController", ['$scope', 'Auth', '$uibModalInstance', 'review', 'product',
+        function ($scope, $auth, $uibModalInstance, review, product) {
+            $scope.product = product;
+            $scope.reviews = review.getReviews(product.id);
+            $scope.close = function () {
+                $uibModalInstance.close('close');
+            };
+        }])
 
     .controller("CartController",
         ['$scope', '$http', 'Notifications', 'cart', 'Auth',

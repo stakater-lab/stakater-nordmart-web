@@ -1,5 +1,39 @@
 <div class="container container-cards-pf">
     <div class="row cart-flex">
+    <script type="text/ng-template" id="product.html">
+        <div class="row cart-tile">
+            <div class="col-xs-12 cart-tile-heading">
+                <h2>
+                    {{product.name}}
+                </h2>
+            </div>
+            <div class="col-xs-12 cart-tile-body">
+                <p class="cart-tile-description">
+                    {{product.description}}
+                </p>
+                <img class="img-responsive img-circle cart-tile-image" ng-src="/app/imgs/{{product.name}}.jpg"></img>
+                <div class="row">
+                    <div class="col-xs-12 mb-5">
+                        <h1>{{product.price | currency}}</h1>
+                    </div>
+                </div>
+                <div class="row">
+                <div class="col-xs-12 mb-5">
+                    <h1>Reviews</h1>
+                    <p>
+                        {{reviews}}
+                    </p>
+                </div>
+            </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" type="button" ng-click="close()">Close</button>
+        </div>
+    </script>
+    <md-button class="md-primary md-raised" ng-click="openProductDetails()">
+        Product details
+    </md-button>
         <div ng-repeat="item in products" class="col-md-4 col-sm-6 col-xs-12 mb-20">
             <div class="row cart-tile">
                 <div class="col-xs-12 cart-tile-heading">
@@ -11,7 +45,7 @@
                     <p class="cart-tile-description">
                         {{item.product.description}}
                     </p>
-                    <img class="img-responsive img-circle cart-tile-image" ng-src="/app/imgs/{{item.product.name}}.jpg"></img>
+                    <img class="img-responsive img-circle cart-tile-image" ng-src="/app/imgs/{{item.product.name}}.jpg" ng-click="openProductDetails(item.product)"></img>
                     <div class="row">
                         <div class="col-xs-12 mb-5">
                             <h1>{{item.product.price | currency}}</h1>
