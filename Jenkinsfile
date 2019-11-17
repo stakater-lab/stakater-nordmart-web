@@ -1,5 +1,5 @@
 #!/usr/bin/env groovy
-@Library('github.com/stakater/stakater-pipeline-library@v2.16.4') _
+@Library('github.com/stakater/stakater-pipeline-library@v2.16.12') _
 
 releaseApplication {
     appName = "web"
@@ -13,5 +13,5 @@ releaseApplication {
     usePersonalAccessToken = true
     tokenCredentialID = 'GithubToken'
     serviceAccount = "jenkins"
-    dockerRepositoryURL = 'docker.delivery.stackator.com:443'
+    dockerRepositoryURL = 'docker-delivery.workshop.stakater.com:443'
 }
