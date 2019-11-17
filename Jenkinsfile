@@ -6,12 +6,12 @@ releaseApplication {
     appType = "node"
     builderImage = "stakater/builder-node-8:v0.0.2"
     goal = "install"
-    notifySlack = false
+    notifySlack = true
     runIntegrationTest = false
     gitUser = "stakater-user"
     gitEmail = "stakater@gmail.com"
     usePersonalAccessToken = true
     tokenCredentialID = 'GithubToken'
     serviceAccount = "jenkins"
-    dockerRepositoryURL = 'docker-delivery.workshop.stakater.com:443'
+    dockerRepositoryURL = 'docker-delivery.cp-stakater.com:443'
 }
