@@ -12,8 +12,6 @@ angular.module("app")
 
 	//Get reviews for the selected product
 	factory.getReviews = function(productItemId) {
-	    //console.log('>getReviews');
-	    //console.log('productItemId ' + productItemId);
 		var deferred = $q.defer();
 
         $http({
@@ -25,11 +23,6 @@ angular.module("app")
             deferred.reject(err);
         });
 	    return deferred.promise;
-	};
-
-	//Get average rating for the product
-	factory.averageRating = function(reviews) {
-	    return 3;
 	};
 	return factory;
 }]);

@@ -3,9 +3,12 @@
 angular.module('app')
 
     .controller("HomeController",
-        ['$scope', '$http', '$filter', 'Notifications', 'cart', 'catalog', 'Auth', '$uibModal',
-            function ($scope, $http, $filter, Notifications, cart, catalog, $auth, $uibModal) {
+        ['$scope', '$http', '$filter', 'Notifications', 'cart', 'catalog', 'review', 'Auth', '$uibModal',
+            function ($scope, $http, $filter, Notifications, cart, catalog, review, $auth, $uibModal) {
 
+
+                var ratings = new Map();
+                var reviews = new Map();
                 $scope.products = [];
                 $scope.addToCart = function (item) {
                     cart.addToCart(item.product, parseInt(item.quantity)).then(function (data) {
@@ -29,6 +32,7 @@ angular.module('app')
 
                 // initialize products
                 catalog.getProducts().then(function (data) {
+                    console.log('initialize products');
                     if (data.error != undefined && data.error != "") {
                         Notifications.error("Error retrieving products: " + data.error);
                         return;
@@ -38,20 +42,45 @@ angular.module('app')
                             quantity: "1",
                             product: el
                         }
+                    }),
+                    // initialize reviews and ratings
+                    $scope.products.forEach(function(item) {
+                        console.log('product name ' + item.product.name);
+                        var tempReviews = review.getReviews(123);
+                        reviews.set(item.product.productId, tempReviews);
+                        var totalRating = 0;
+                        for(var i = 0; i < tempReviews.lenght; i++) {
+                            var tempReview = tempReviews[i];
+                            totalRating = totalRating + parseFloat(tempReview.rating);
+                        }
+                        ratings.set(item.product.itemId, (7.11/5).toFixed(1));
                     })
                 }, function (err) {
                     Notifications.error("Error retrieving products: " + err.statusText);
                 });
 
+                $scope.getRating = function (productId) {
+                    console.log('get rating ' + productId);
+                    return ratings.get(productId);
+                };
+
+                $scope.getReviews = function (productId) {
+                    console.log('get reviews ' + productId);
+                    return reviews.get(productId);
+                };
+
 
                 // open dialog with product details
-                $scope.openProductDetails = function (product) {
+                $scope.openProductDetails = function (product, reviews) {
                     var modalInstance = $uibModal.open({
                         templateUrl: 'product.html',
                         controller: 'ProductModalController',
                         resolve: {
                             product: function () {
                                 return product;
+                            },
+                            reviews: function () {
+                                return reviews;
                             }
                         }
                     });
@@ -60,13 +89,18 @@ angular.module('app')
 
             }])
 
-    .controller("ProductModalController", ['$scope', 'Auth', '$uibModalInstance', 'review', 'product',
-        function ($scope, $auth, $uibModalInstance, review, product) {
+    .controller("ProductModalController", ['$scope', 'Auth', '$uibModalInstance', 'product', 'reviews',
+        function ($scope, $auth, $uibModalInstance, product, reviews) {
             $scope.product = product;
-            $scope.reviews = review.getReviews(product.id);
+            $scope.reviews = reviews;
             $scope.close = function () {
                 $uibModalInstance.close('close');
             };
+
+            $scope.formatDate = function (dateInMillis) {
+                return new Date(dateInMillis).toLocaleString();
+            }
+
         }])
 
     .controller("CartController",

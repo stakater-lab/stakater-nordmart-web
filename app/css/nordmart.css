@@ -88,3 +88,10 @@
 .cart-tile-image {
 	margin-bottom: auto
 }
+
+.product-tile-image {
+	margin-bottom: auto;
+	margin-left: 10px;
+	margin-right: 10px;
+    object-fit: contain;
+}
