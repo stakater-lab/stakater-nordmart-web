@@ -53,7 +53,7 @@ angular.module('app')
                             var tempReview = tempReviews[i];
                             totalRating = totalRating + parseFloat(tempReview.rating);
                         }
-                        ratings.set(item.product.itemId, (7.11/5).toFixed(1));
+                        ratings.set(item.product.itemId, (totalRating/tempReviews.lenght).toFixed(1));
                     })
                 }, function (err) {
                     Notifications.error("Error retrieving products: " + err.statusText);
