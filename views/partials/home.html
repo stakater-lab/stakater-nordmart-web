@@ -1,3 +1,38 @@
+<script type="text/ng-template" id="product.html">
+    <div>
+        <div class="col-xs-12 cart-tile-heading">
+            <h2>
+                {{product.name}}
+            </h2>
+        </div>
+        <div class="col-xs-12 cart-tile-body">
+            <p class="cart-tile-description">
+                {{product.description}}
+            </p>
+            <img class="img-circle product-tile-image" ng-src="/app/imgs/{{product.name}}.jpg"></img>
+            <div class="row">
+                <div class="col-xs-12 mb-5">
+                    <h1>{{product.price | currency}}</h1>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 mb-5">
+                    <h1>Reviews</h1>
+                    <div ng-repeat="r in reviews" class="review-box mb-5 pa-5">
+                        <b>{{formatString(r.customerName)}}</b><br>
+                        <i>{{formatDate(r.dateTime)}}</i><br>
+                        Rating: {{r.rating}}/5<hr>
+                        {{formatString(r.reviewText)}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" type="button" ng-click="close()">Close</button>
+    </div>
+</script>
+
 <div class="container container-cards-pf">
     <div class="row cart-flex">
         <div ng-repeat="item in products" class="col-md-4 col-sm-6 col-xs-12 mb-20">
@@ -11,10 +46,13 @@
                     <p class="cart-tile-description">
                         {{item.product.description}}
                     </p>
-                    <img class="img-responsive img-circle cart-tile-image" ng-src="/app/imgs/{{item.product.name}}.jpg"></img>
+                    <img class="img-responsive img-circle cart-tile-image" ng-src="/app/imgs/{{item.product.name}}.jpg" ng-click="openProductDetails(item.product, getReviews(item.product.itemId))"></img>
                     <div class="row">
-                        <div class="col-xs-12 mb-5">
+                        <div class="col-xs-6 mb-5">
                             <h1>{{item.product.price | currency}}</h1>
+                        </div>
+                        <div class="col-xs-4 mb-5">
+                            <h1>Rating: {{getRating(item.product.itemId)}}/5</h1>
                         </div>
                         <div class="col-xs-12 pb-10">
                             <form class="form-inline d-inline">
