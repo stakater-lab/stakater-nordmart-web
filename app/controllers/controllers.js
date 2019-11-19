@@ -46,26 +46,36 @@ angular.module('app')
                     // initialize reviews and ratings
                     $scope.products.forEach(function(item) {
                         console.log('product name ' + item.product.name);
-                        var tempReviews = review.getReviews(123);
-                        reviews.set(item.product.productId, tempReviews);
-                        var totalRating = 0;
-                        for(var i = 0; i < tempReviews.lenght; i++) {
-                            var tempReview = tempReviews[i];
-                            totalRating = totalRating + parseFloat(tempReview.rating);
-                        }
-                        ratings.set(item.product.itemId, (totalRating/tempReviews.lenght).toFixed(1));
+                        var promise = review.getReviews(item.product.itemId);
+
+                        promise.then(function(value) {
+                            try {
+                                var body = value.body;
+                                var totalRating = 0;
+                                body.forEach(function (review) {
+                                  totalRating = totalRating + parseFloat(review.rating);
+                                });
+                                if (totalRating > 0) {
+                                    ratings.set(item.product.itemId, (totalRating/body.length).toFixed(1));
+                                } else {
+                                    ratings.set(item.product.itemId, '-');
+                                }
+                                reviews.set(item.product.itemId, body);
+                            } catch(err) {
+                                console.log("ERROR parsing body of product: " + err);
+                                ratings.set(item.product.itemId, '-');
+                            }
+                        });
                     })
                 }, function (err) {
                     Notifications.error("Error retrieving products: " + err.statusText);
                 });
 
                 $scope.getRating = function (productId) {
-                    console.log('get rating ' + productId);
                     return ratings.get(productId);
                 };
 
                 $scope.getReviews = function (productId) {
-                    console.log('get reviews ' + productId);
                     return reviews.get(productId);
                 };
 
@@ -95,6 +105,10 @@ angular.module('app')
             $scope.reviews = reviews;
             $scope.close = function () {
                 $uibModalInstance.close('close');
+            };
+
+            $scope.formatString = function (str) {
+                return str.replace(/\+/g, ' ');
             };
 
             $scope.formatDate = function (dateInMillis) {

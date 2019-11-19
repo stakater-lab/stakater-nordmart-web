@@ -18,13 +18,11 @@
             <div class="row">
                 <div class="col-xs-12 mb-5">
                     <h1>Reviews</h1>
-                    <div ng-repeat="r in reviews">
-                        <p>
-                            {{r.customerName}}
-                            {{r.rating}}/5
-                            {{formatDate(r.dateTime)}}
-                            {{r.reviewText}}
-                        </p>
+                    <div ng-repeat="r in reviews" class="review-box mb-5 pa-5">
+                        <b>{{formatString(r.customerName)}}</b><br>
+                        <i>{{formatDate(r.dateTime)}}</i><br>
+                        Rating: {{r.rating}}/5<hr>
+                        {{formatString(r.reviewText)}}
                     </div>
                 </div>
             </div>
