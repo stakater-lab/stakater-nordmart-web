@@ -15,6 +15,6 @@ releaseApplication {
     serviceAccount = "jenkins"
     dockerRepositoryURL = 'docker-delivery.workshop.stakater.com:443'
     // configuration parameter for e2e tess
-    e2eTestJob = "false"
+    e2eTestJob = false
     e2eJobName = "../stakater-nordmart-e2e-tests/master"
 }
