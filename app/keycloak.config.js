@@ -6,7 +6,8 @@ var config =
   "resource": process.env.SSO_CLIENT_ID,
   "ssl-required": 'external',
   "public-client": true,
-  "enable-cors": true
+  "enable-cors": true,
+  "confidential-port": 0
 };
 
 module.exports = config;

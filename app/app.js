@@ -36,7 +36,7 @@ angular.element(document).ready(function () {
             };
 
             keycloakAuth.init({
-                onLoad: 'check-sso'
+                onLoad: 'login-required'
             }).success(function () {
                 if (keycloakAuth.authenticated) {
                     keycloakAuth.loadUserInfo().success(function (userInfo) {
@@ -81,10 +81,10 @@ module.config(['$httpProvider', function ($httpProvider) {
             'request': function (config) {
                 var deferred = $q.defer();
                 if (Auth.authz && Auth.authz.token) {
-                    Auth.authz.updateToken(5).success(function () {
+                    Auth.authz.updateToken(10).success(function () {
                         config.headers = config.headers || {};
                         config.headers.Authorization = 'Bearer ' + Auth.authz.token;
-                        config.withCredentials = true;
+
                         deferred.resolve(config);
                     }).error(function () {
                         deferred.reject('Failed to refresh token');
