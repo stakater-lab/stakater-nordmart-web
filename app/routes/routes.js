@@ -7,6 +7,9 @@ angular.module('app').config([ '$routeProvider', function($routeProvider) {
   }).when('/cart', {
     templateUrl : 'partials/cart.html',
     controller : 'CartController'
+  }).when('/profile', {
+    templateUrl : 'partials/customer.html',
+    controller : 'CustomerController'
   }).otherwise({
     redirectTo : '/'
   });
