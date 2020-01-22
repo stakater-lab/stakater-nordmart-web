@@ -11,7 +11,7 @@ angular.module("app")
 		    : "https://" + NORDMART_CONFIG.SECURE_API_ENDPOINT + '.' + $location.host().replace(/^.*?\.(.*)/g,"$1")) + '/api/v1/product-search';
 	} else {
 		baseUrl = (NORDMART_CONFIG.API_ENDPOINT.startsWith("http://")
-		    ? NORDMART_CONFIG.SECURE_API_ENDPOINT
+		    ? NORDMART_CONFIG.API_ENDPOINT
 		    : "http://" + NORDMART_CONFIG.API_ENDPOINT + '.' + $location.host().replace(/^.*?\.(.*)/g,"$1")) + '/api/v1/product-search';
 	}
 
