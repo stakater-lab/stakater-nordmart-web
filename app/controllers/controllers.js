@@ -210,8 +210,9 @@ angular.module('app')
 
                 $scope.save = function ($customer) {
                     $scope.model = angular.copy($customer);
+                    $scope.model.email = $auth.userInfo.preferred_username;
                     if ($scope.model.id) {
-                        customer.update($scope.model).then(function (resp) {
+                        customer.update($scope.model).then(function () {
                             Notifications.success("Customer updated successfully");
                         }, function (err) {
                             Notifications.error("Error while updating customer: " + err.statusText);
