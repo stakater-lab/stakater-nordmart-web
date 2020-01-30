@@ -28,7 +28,6 @@ angular.element(document).ready(function () {
             auth.ssoEnabled = true;
             var keycloakAuth = new Keycloak('keycloak.json');
             auth.loggedIn = false;
-
             auth.login = function () {
                 keycloakAuth.login({
                     loginHint: 'appuser'
@@ -36,9 +35,15 @@ angular.element(document).ready(function () {
             };
 
             keycloakAuth.init({
-                onLoad: 'login-required'
+                onLoad: 'check-sso',
+                token: localStorage.getItem('token'),
+                refreshToken: localStorage.getItem('refreshToken'),
+                idToken: localStorage.getItem('idToken')
             }).success(function () {
                 if (keycloakAuth.authenticated) {
+                    localStorage.setItem('token', keycloakAuth.token);
+                    localStorage.setItem('refreshToken', keycloakAuth.refreshToken);
+                    localStorage.setItem('idToken', keycloakAuth.idToken);
                     keycloakAuth.loadUserInfo().success(function (userInfo) {
                         auth.userInfo = userInfo;
                         angular.bootstrap(document, ["app"], {

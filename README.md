@@ -44,7 +44,9 @@ To deploy app inside a docker container
 * Finally run the image by executing
 
   ```bash
-  docker run -d --name web --network nordmart-apps -e PORT=4200 -e SECURE_GW_ENDPOINT="gateway:8080" -p 4200:4200 web
+  docker run -d --name web --network nordmart-apps -e PORT=4200 -e SECURE_GW_ENDPOINT="gateway:8080" \
+  -e SSO_URL="http://keycloak-security.DOMAIN:8180/auth" -e SSO_REALM="nordmart" -e SSO_CLIENT_ID="stakater-nordmart-web" \
+   -p 4200:4200 web
   ```
 
 ### Helm Charts
