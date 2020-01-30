@@ -34,6 +34,13 @@
 </script>
 
 <div class="container container-cards-pf">
+    <!-- Search form -->
+    <!--form-inline md-form mr-auto mb-4-->
+    <form class="form-inline d-inline" id="search-form">
+        <input id="search-input" class="mr-sm-2" type="text" placeholder="Search" aria-label="Search" ng-model="searchCriteria">
+        <button id="search-submit" mdbBtn size="sm" color="elegant" rounded="true" class="btn btn-primary ml-20" mdbWavesEffect type="submit"
+                ng-click="productsSearch(searchCriteria)">Search</button>
+    </form>
     <div class="row cart-flex">
         <div ng-repeat="item in products" class="col-md-4 col-sm-6 col-xs-12 mb-20">
             <div class="row cart-tile">
