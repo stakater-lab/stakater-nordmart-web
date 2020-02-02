@@ -9,9 +9,13 @@ deployment:
   env:
   - name: PORT
     value: "4200"
-  # - name: SSO_URL
-  #   value: "https://keycloak.global.stakater.com"
-  - name: SECURE_COOLSTORE_GW_ENDPOINT
+  - name: SSO_URL
+    value: "http://keycloak-security.DOMAIN:8180/auth"
+  - name: SSO_REALM
+    value: "nordmart"
+  - name: SSO_CLIENT_ID
+    value: "stakater-nordmart-web"
+  - name: SECURE_GW_ENDPOINT
     value: "https://gateway.stakater.com"
 service:
   ports:

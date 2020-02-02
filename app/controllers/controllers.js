@@ -169,6 +169,7 @@ angular.module('app')
 
                 $scope.checkout = function () {
                     cart.checkout().then(function (cartData) {
+                        Notifications.success("Checkout has been done successfully");
                     }, function (err) {
                         Notifications.error("Error checking out: " + err.statusText);
                     });

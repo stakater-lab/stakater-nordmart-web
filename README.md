@@ -9,6 +9,18 @@ It requires following things to be installed:
 * Node: ^8.0.
 * NPM.
 
+## Configurations
+
+Environment variables can be provided to configure the customer service.
+
+* SECURE_GW_ENDPOINT - Secure gateway service endpoint.
+* PORT - Port of the web application.
+
+**Keycloak configurations**
+*SSO_URL - Keycloak authentication URL
+*SSO_REALM - Keycloak realm name
+*SSO_CLIENT_ID - Keycloak client
+
 ## Deployment strategy
 
 ### Local deployment
