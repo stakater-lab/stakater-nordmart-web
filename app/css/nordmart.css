@@ -106,3 +106,18 @@
 .review-box {
     border: 2px solid #E8E8E8;
 }
+
+.mr-sm-2 {
+    display: inline-block;
+    width: 50%;
+    margin-left: 25%;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    vertical-align: middle;
+}
+
+.ml-20 {
+	margin-left: 10px;
+	margin-top: -11px;
+	font-size: 14px;
+}

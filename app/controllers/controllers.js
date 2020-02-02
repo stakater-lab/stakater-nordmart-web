@@ -3,8 +3,8 @@
 angular.module('app')
 
     .controller("HomeController",
-        ['$scope', '$http', '$filter', 'Notifications', 'cart', 'catalog', 'review', 'Auth', '$uibModal',
-            function ($scope, $http, $filter, Notifications, cart, catalog, review, $auth, $uibModal) {
+        ['$scope', '$http', '$filter', 'Notifications', 'cart', 'catalog', 'review', 'search', 'Auth', '$uibModal',
+            function ($scope, $http, $filter, Notifications, cart, catalog, review, search, $auth, $uibModal) {
 
 
                 var ratings = new Map();
@@ -27,6 +27,44 @@ angular.module('app')
 
                 $scope.login = function () {
                     $auth.login();
+                };
+
+
+                $scope.productsSearch =  function (data) {
+                    search.productsSearch(data).then(function (data) {
+                        console.log('product search' + data);
+                        $scope.products = data.products.map(function (el) {
+                            return {
+                                quantity: "1",
+                                product: el
+                            }
+                        }),
+                        // initialize reviews and ratings
+                        $scope.products.forEach(function(item) {
+                            console.log('product name ' + item.product.name);
+                            var promise = review.getReviews(item.product.itemId);
+
+                            promise.then(function(value) {
+                                try {
+                                    var body = value.body;
+                                    var totalRating = 0;
+                                    body.forEach(function (review) {
+                                      totalRating = totalRating + parseFloat(review.rating);
+                                    });
+                                    if (totalRating > 0) {
+                                        ratings.set(item.product.itemId, (totalRating/body.length).toFixed(1));
+                                    } else {
+                                        ratings.set(item.product.itemId, '-');
+                                    }
+                                    reviews.set(item.product.itemId, body);
+                                } catch(err) {
+                                    console.log("ERROR parsing body of product: " + err);
+                                    ratings.set(item.product.itemId, '-');
+                                }
+                            });
+                         })
+                    }), function(err) {
+                    }
                 };
 
 
