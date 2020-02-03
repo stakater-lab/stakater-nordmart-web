@@ -10,13 +10,13 @@ deployment:
   - name: PORT
     value: "4200"
   - name: SSO_URL
-    value: "http://keycloak-security.DOMAIN:8180/auth"
+    value: "https://keycloak-dev.DOMAIN/auth"
   - name: SSO_REALM
     value: "nordmart"
   - name: SSO_CLIENT_ID
     value: "stakater-nordmart-web"
   - name: SECURE_GW_ENDPOINT
-    value: "https://gateway.stakater.com"
+    value: "https://gateway-dev.DOMAIN"
 service:
   ports:
   - port: 4200
