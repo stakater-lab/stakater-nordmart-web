@@ -207,6 +207,7 @@ angular.module('app')
 
                 $scope.checkout = function () {
                     cart.checkout().then(function (cartData) {
+                        Notifications.success("Checkout has been done successfully");
                     }, function (err) {
                         Notifications.error("Error checking out: " + err.statusText);
                     });
@@ -220,6 +221,49 @@ angular.module('app')
                 };
 
                 reset();
+            }])
+
+    .controller("CustomerController",
+        ['$scope', '$http', 'Notifications', 'customer', 'Auth',
+            function ($scope, $http, Notifications, customer, $auth) {
+                $scope.model = undefined;
+
+                var email = ($auth.userInfo || {}).preferred_username;
+                customer.getByEmail(email).then(function (resp) {
+                    if (resp && resp.data) {
+                        var restCustomer = resp.data;
+                        $scope.model = {
+                            id: restCustomer.id,
+                            email: restCustomer.email,
+                            address: restCustomer.address,
+                            gender: restCustomer.gender && restCustomer.gender === 'M' ? 'male' : 'female' || 'male',
+                            dateOfBirth: new Date(restCustomer.dateOfBirth),
+                            phoneNumber: restCustomer.phoneNumber
+                        }
+                    } else {
+                        $scope.model = {};
+                    }
+                }, function (err) {
+                    Notifications.error("Error while fetching customer profile. " + err.statusText);
+                });
+
+                $scope.save = function ($customer) {
+                    $scope.model = angular.copy($customer);
+                    $scope.model.email = $auth.userInfo.preferred_username;
+                    if ($scope.model.id) {
+                        customer.update($scope.model).then(function () {
+                            Notifications.success("Customer updated successfully");
+                        }, function (err) {
+                            Notifications.error("Error while updating customer: " + err.statusText);
+                        });
+                    } else {
+                        customer.save($scope.model).then(function (resp) {
+                            Notifications.success("Customer saved successfully");
+                        }, function (err) {
+                            Notifications.error("Error while saving customer: " + err.statusText);
+                        });
+                    }
+                };
             }])
 
     .controller("HeaderController",

@@ -28,7 +28,6 @@ angular.element(document).ready(function () {
             auth.ssoEnabled = true;
             var keycloakAuth = new Keycloak('keycloak.json');
             auth.loggedIn = false;
-
             auth.login = function () {
                 keycloakAuth.login({
                     loginHint: 'appuser'
@@ -36,9 +35,15 @@ angular.element(document).ready(function () {
             };
 
             keycloakAuth.init({
-                onLoad: 'check-sso'
+                onLoad: 'check-sso',
+                token: localStorage.getItem('token'),
+                refreshToken: localStorage.getItem('refreshToken'),
+                idToken: localStorage.getItem('idToken')
             }).success(function () {
                 if (keycloakAuth.authenticated) {
+                    localStorage.setItem('token', keycloakAuth.token);
+                    localStorage.setItem('refreshToken', keycloakAuth.refreshToken);
+                    localStorage.setItem('idToken', keycloakAuth.idToken);
                     keycloakAuth.loadUserInfo().success(function (userInfo) {
                         auth.userInfo = userInfo;
                         angular.bootstrap(document, ["app"], {
@@ -81,10 +86,10 @@ module.config(['$httpProvider', function ($httpProvider) {
             'request': function (config) {
                 var deferred = $q.defer();
                 if (Auth.authz && Auth.authz.token) {
-                    Auth.authz.updateToken(5).success(function () {
+                    Auth.authz.updateToken(10).success(function () {
                         config.headers = config.headers || {};
                         config.headers.Authorization = 'Bearer ' + Auth.authz.token;
-                        config.withCredentials = true;
+
                         deferred.resolve(config);
                     }).error(function () {
                         deferred.reject('Failed to refresh token');

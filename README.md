@@ -9,6 +9,18 @@ It requires following things to be installed:
 * Node: ^8.0.
 * NPM.
 
+## Configurations
+
+Environment variables can be provided to configure the customer service.
+
+* SECURE_GW_ENDPOINT - Secure gateway service endpoint.
+* PORT - Port of the web application.
+
+**Keycloak configurations**
+*SSO_URL - Keycloak authentication URL
+*SSO_REALM - Keycloak realm name
+*SSO_CLIENT_ID - Keycloak client
+
 ## Deployment strategy
 
 ### Local deployment
@@ -44,7 +56,9 @@ To deploy app inside a docker container
 * Finally run the image by executing
 
   ```bash
-  docker run -d --name web --network nordmart-apps -e PORT=4200 -e SECURE_GW_ENDPOINT="gateway:8080" -p 4200:4200 web
+  docker run -d --name web --network nordmart-apps -e PORT=4200 -e SECURE_GW_ENDPOINT="gateway:8080" \
+  -e SSO_URL="http://keycloak-security.DOMAIN:8180/auth" -e SSO_REALM="nordmart" -e SSO_CLIENT_ID="stakater-nordmart-web" \
+   -p 4200:4200 web
   ```
 
 ### Helm Charts
