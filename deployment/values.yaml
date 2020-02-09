@@ -1,30 +1,68 @@
 applicationName: "web"
 deployment:
+  annotations:
   podLabels:
     app: web
   image:
-    repository: docker.release.stakater.com:443/stakater/web
-    tag: v0.0.7
-  imagePullSecrets: "docker-registry-nexus-secret"
+    repository: stakater/stakater-lab/web
+    tag: v0.0.1
+  probes:
+    readinessProbe:
+      failureThreshold: 3
+      periodSeconds: 10
+      successThreshold: 1
+      timeoutSeconds: 1
+      initialDelaySeconds: 10
+      httpGet:
+        path: /health
+        port: 4200
+    livenessProbe:
+      failureThreshold: 3
+      periodSeconds: 10
+      successThreshold: 1
+      timeoutSeconds: 1
+      initialDelaySeconds: 10
+      httpGet:
+        path: /health
+        port: 4200
+  volumes: {}
   env:
   - name: PORT
     value: "4200"
+  - name: SECURE_GW_ENDPOINT
+    value: "https://gateway-dev.domain.stakater.com"
   - name: SSO_URL
-    value: "https://keycloak-dev.DOMAIN/auth"
+    value: "https://keycloak-dev.domain.stakater.com/auth"
   - name: SSO_REALM
     value: "nordmart"
   - name: SSO_CLIENT_ID
     value: "stakater-nordmart-web"
-  - name: SECURE_GW_ENDPOINT
-    value: "https://gateway-dev.DOMAIN"
+  - name: JAEGER_ENDPOINT
+    value: "http://jaeger-collector.istio-system:14268/api/traces"
 service:
   ports:
   - port: 4200
-    name: web
+    name: tcp
     protocol: TCP
     targetPort: 4200
 rbac:
-  create: false
+  create: true
   serviceAccount:
-    name: default
-configMap: {}
+    create: true
+configMap:
+  enabled: false
+
+ingress:
+  enabled: false
+  servicePort: 8080
+  hosts:
+    - chart-example.local
+  annotations: 
+    # kubernetes.io/ingress.class: external-ingress
+    # ingress.kubernetes.io/rewrite-target: /
+    # ingress.kubernetes.io/force-ssl-redirect: true
+  tls:
+    # Secrets must be manually created in the namespace.
+    # - secretName: chart-example-tls
+    #   hosts:
+    #     - chart-example.local
