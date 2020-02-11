@@ -30,9 +30,9 @@ deployment:
   - name: PORT
     value: "4200"
   - name: SECURE_GW_ENDPOINT
-    value: "https://gateway-dev.domain.stakater.com"
+    value: "https://gateway-dev.DOMAIN"
   - name: SSO_URL
-    value: "https://keycloak-dev.domain.stakater.com/auth"
+    value: "https://keycloak-dev.DOMAIN/auth"
   - name: SSO_REALM
     value: "nordmart"
   - name: SSO_CLIENT_ID
