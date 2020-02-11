@@ -56,7 +56,7 @@ ingress:
   enabled: false
   servicePort: 8080
   hosts:
-    - chart-example.local
+    - web-dev.DOMAIN
   annotations: 
     # kubernetes.io/ingress.class: external-ingress
     # ingress.kubernetes.io/rewrite-target: /
