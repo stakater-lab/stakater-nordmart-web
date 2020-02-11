@@ -1,0 +1,25 @@
+---
+# Source: application/templates/service.yaml
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: web
+    group: com.stakater.platform
+    provider: stakater
+    version: "1.0.0"
+    chart: "application-0.0.12"
+    release: "RELEASE-NAME"
+    heritage: "Tiller"
+  name: web
+spec:
+  selector:
+    app: web
+    
+  ports:
+    - name: web
+      port: 4200
+      protocol: TCP
+      targetPort: 4200
+    

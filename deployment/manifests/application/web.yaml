@@ -1,0 +1,107 @@
+---
+# Source: application/templates/service.yaml
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: web
+    group: com.stakater.platform
+    provider: stakater
+    version: "1.0.0"
+    chart: "application-0.0.12"
+    release: "RELEASE-NAME"
+    heritage: "Tiller"
+  name: web
+spec:
+  selector:
+    app: web
+    
+  ports:
+    - name: web
+      port: 4200
+      protocol: TCP
+      targetPort: 4200
+    
+---
+# Source: application/templates/deployment.yaml
+
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: web
+    group: com.stakater.platform
+    provider: stakater
+    version: "1.0.0"
+    chart: "application-0.0.12"
+    release: "RELEASE-NAME"
+    heritage: "Tiller"
+  annotations:
+    reloader.stakater.com/auto: "true"
+    
+  name: web
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: web
+        group: com.stakater.platform
+        provider: stakater
+        version: "1.0.0"
+        chart: "application-0.0.12"
+        release: "RELEASE-NAME"
+        heritage: "Tiller"
+        app: web
+        
+    spec:      
+      imagePullSecrets:
+      - name: docker-registry-nexus-secret
+      containers:
+      - name: web
+        image: "docker.release.stakater.com:443/stakater/web:v0.0.7"
+        imagePullPolicy: IfNotPresent
+        env:
+          - name: PORT
+            value: "4200"
+          - name: SSO_URL
+            value: https://keycloak-dev.DOMAIN/auth
+          - name: SSO_REALM
+            value: nordmart
+          - name: SSO_CLIENT_ID
+            value: stakater-nordmart-web
+          - name: SECURE_GW_ENDPOINT
+            value: https://gateway-dev.DOMAIN
+          
+      serviceAccountName: default        
+---
+# Source: application/templates/clusterrole.yaml
+
+---
+# Source: application/templates/clusterrolebinding.yaml
+
+---
+# Source: application/templates/configmap.yaml
+
+---
+# Source: application/templates/ingress.yaml
+
+---
+# Source: application/templates/pvc.yaml
+
+---
+# Source: application/templates/role-binding.yaml
+
+---
+# Source: application/templates/role.yaml
+
+---
+# Source: application/templates/routes.yaml
+
+---
+# Source: application/templates/secret.yaml
+
+---
+# Source: application/templates/serviceaccount.yaml
+
