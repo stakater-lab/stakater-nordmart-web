@@ -4,7 +4,7 @@ deployment:
   podLabels:
     app: web
   image:
-    repository: stakater/stakater-lab/web
+    repository: stakater/stakater-nordmart-web
     tag: v0.0.1
   probes:
     readinessProbe:
