@@ -1,0 +1,71 @@
+applicationName: "web"
+deployment:
+  annotations:
+  podLabels:
+    app: web
+  image:
+    repository: stakater/stakater-lab/web
+    tag: v0.0.1
+  probes:
+    readinessProbe:
+      failureThreshold: 3
+      periodSeconds: 10
+      successThreshold: 1
+      timeoutSeconds: 1
+      initialDelaySeconds: 10
+      httpGet:
+        path: /health
+        port: 4200
+    livenessProbe:
+      failureThreshold: 3
+      periodSeconds: 10
+      successThreshold: 1
+      timeoutSeconds: 1
+      initialDelaySeconds: 10
+      httpGet:
+        path: /health
+        port: 4200
+  volumes: {}
+  env:
+  - name: PORT
+    value: "4200"
+  - name: SECURE_GW_ENDPOINT
+    value: "https://gateway-dev.DOMAIN"
+  - name: SSO_URL
+    value: "https://keycloak-dev.DOMAIN/auth"
+  - name: SSO_REALM
+    value: "nordmart"
+  - name: SSO_CLIENT_ID
+    value: "stakater-nordmart-web"
+  - name: JAEGER_ENDPOINT
+    value: "http://jaeger-collector.istio-system:14268/api/traces"
+service:
+  ports:
+  - port: 4200
+    name: tcp
+    protocol: TCP
+    targetPort: 4200
+  additionalLabels:
+    expose: "true"
+    annotations:
+      config.xposer.stakater.com/Domain: DOMAIN
+      config.xposer.stakater.com/IngressNameTemplate: '{{.Service}}-dev'
+      config.xposer.stakater.com/IngressURLTemplate: '{{.Service}}-dev.{{.Domain}}'
+      config.xposer.stakater.com/TLS: 'true'
+      config.xposer.stakater.com/TLSSecretNameTemplate: "tls-cert"
+      xposer.stakater.com/annotations: |-
+        kubernetes.io/ingress.class: external-ingress
+        forecastle.stakater.com/expose: true
+        forecastle.stakater.com/icon: https://github.com/stakater/ForecastleIcons/raw/master/stakater.png
+        forecastle.stakater.com/appName: Web-dev
+        forecastle.stakater.com/group: Nordmart
+        kubernetes.io/ingress.class: Nordmart
+        monitor.stakater.com/enabled: true
+        ingress.kubernetes.io/force-ssl-redirect: true
+        exposeIngressUrl: locally
+rbac:
+  create: true
+  serviceAccount:
+    create: true
+configMap:
+  enabled: false
