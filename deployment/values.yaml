@@ -30,9 +30,9 @@ deployment:
   - name: PORT
     value: "4200"
   - name: SECURE_GW_ENDPOINT
-    value: "https://gateway-dev.DOMAIN"
+    value: "https://gateway-NAMESPACE.DOMAIN"
   - name: SSO_URL
-    value: "https://keycloak-dev.DOMAIN/auth"
+    value: "https://keycloak-NAMESPACE.DOMAIN/auth"
   - name: SSO_REALM
     value: "nordmart"
   - name: SSO_CLIENT_ID
@@ -56,7 +56,7 @@ ingress:
   enabled: false
   servicePort: 8080
   hosts:
-    - web-dev.DOMAIN
+    - web-NAMESPACE.DOMAIN
   annotations: 
     # kubernetes.io/ingress.class: external-ingress
     # ingress.kubernetes.io/rewrite-target: /
