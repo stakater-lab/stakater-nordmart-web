@@ -53,11 +53,17 @@ configMap:
   enabled: false
 
 ingress:
-  enabled: false
+  enabled: true
   servicePort: 8080
   hosts:
     - web-NAMESPACE.DOMAIN
-  annotations: 
+  annotations:
+    forecastle.stakater.com/expose: true
+    forecastle.stakater.com/icon: https://github.com/stakater/ForecastleIcons/raw/master/stakater.png
+    forecastle.stakater.com/appName: Web-NAMESPACE
+    forecastle.stakater.com/group: Nordmart
+    kubernetes.io/ingress.class: Nordmart
+    monitor.stakater.com/enabled: true
     # kubernetes.io/ingress.class: external-ingress
     # ingress.kubernetes.io/rewrite-target: /
     # ingress.kubernetes.io/force-ssl-redirect: true
