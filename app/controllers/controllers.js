@@ -31,6 +31,10 @@ angular.module('app')
 
 
                 $scope.productsSearch =  function (data) {
+                    if (!data) {
+                        initializeProducts();
+                        return;
+                    }
                     search.productsSearch(data).then(function (data) {
                         console.log('product search' + data);
                         $scope.products = data.products.map(function (el) {
@@ -69,7 +73,7 @@ angular.module('app')
 
 
                 // initialize products
-                catalog.getProducts().then(function (data) {
+                let initializeProducts = () => catalog.getProducts().then(function (data) {
                     console.log('initialize products');
                     if (data.error != undefined && data.error != "") {
                         Notifications.error("Error retrieving products: " + data.error);
@@ -108,6 +112,8 @@ angular.module('app')
                 }, function (err) {
                     Notifications.error("Error retrieving products: " + err.statusText);
                 });
+
+                initializeProducts();
 
                 $scope.getRating = function (productId) {
                     return ratings.get(productId);
