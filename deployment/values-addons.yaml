@@ -5,7 +5,7 @@ deployment:
     app: web
   image:
     repository: stakater/stakater-nordmart-web
-    tag: v0.0.1
+    tag: v0.0.4
   probes:
     readinessProbe:
       failureThreshold: 3
@@ -54,7 +54,7 @@ configMap:
 
 ingress:
   enabled: true
-  servicePort: 8080
+  servicePort: 4200
   hosts:
     - web-NAMESPACE.DOMAIN
   annotations:
@@ -62,11 +62,10 @@ ingress:
     forecastle.stakater.com/icon: https://github.com/stakater/ForecastleIcons/raw/master/stakater.png
     forecastle.stakater.com/appName: Web-NAMESPACE
     forecastle.stakater.com/group: Nordmart
-    kubernetes.io/ingress.class: Nordmart
     monitor.stakater.com/enabled: true
-    # kubernetes.io/ingress.class: external-ingress
-    # ingress.kubernetes.io/rewrite-target: /
-    # ingress.kubernetes.io/force-ssl-redirect: true
+    kubernetes.io/ingress.class: external-ingress
+    ingress.kubernetes.io/rewrite-target: /
+    ingress.kubernetes.io/force-ssl-redirect: true
   tls:
     # Secrets must be manually created in the namespace.
     # - secretName: chart-example-tls
