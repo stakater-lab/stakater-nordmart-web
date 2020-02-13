@@ -9,7 +9,7 @@ metadata:
     group: com.stakater.platform
     provider: stakater
     version: "1.0.0"
-    chart: "application-0.0.12"
+    chart: "application-0.0.13"
     release: "RELEASE-NAME"
     heritage: "Tiller"
   name: web
@@ -24,7 +24,7 @@ metadata:
     group: com.stakater.platform
     provider: stakater
     version: "1.0.0"
-    chart: "application-0.0.12"
+    chart: "application-0.0.13"
     release: "RELEASE-NAME"
     heritage: "Tiller"
   name: web
@@ -49,7 +49,7 @@ metadata:
     group: com.stakater.platform
     provider: stakater
     version: "1.0.0"
-    chart: "application-0.0.12"
+    chart: "application-0.0.13"
     release: "RELEASE-NAME"
     heritage: "Tiller"
   name: web
@@ -62,7 +62,7 @@ spec:
         group: com.stakater.platform
         provider: stakater
         version: "1.0.0"
-        chart: "application-0.0.12"
+        chart: "application-0.0.13"
         release: "RELEASE-NAME"
         heritage: "Tiller"
         app: web
@@ -70,7 +70,7 @@ spec:
     spec:
       containers:
       - name: web
-        image: "stakater/stakater-nordmart-web:v0.0.1"
+        image: "stakater/stakater-nordmart-web:v0.0.4"
         imagePullPolicy: IfNotPresent
         env:
           - name: PORT
@@ -117,7 +117,7 @@ metadata:
     group: com.stakater.platform
     provider: stakater
     version: "1.0.0"
-    chart: "application-0.0.12"
+    chart: "application-0.0.13"
     release: "RELEASE-NAME"
     heritage: "Tiller"
   annotations:
@@ -125,9 +125,12 @@ metadata:
     forecastle.stakater.com/expose: true
     forecastle.stakater.com/group: Nordmart
     forecastle.stakater.com/icon: https://github.com/stakater/ForecastleIcons/raw/master/stakater.png
-    kubernetes.io/ingress.class: Nordmart
+    ingress.kubernetes.io/force-ssl-redirect: true
+    ingress.kubernetes.io/rewrite-target: /
+    kubernetes.io/ingress.class: external-ingress
     monitor.stakater.com/enabled: true
-    spec:
+    
+spec:
   rules:
     - host: web-NAMESPACE.DOMAIN
       http:
@@ -135,7 +138,7 @@ metadata:
           - path: /
             backend:
               serviceName: web
-              servicePort: 8080
+              servicePort: 4200
 ---
 # Source: application/templates/clusterrole.yaml
 

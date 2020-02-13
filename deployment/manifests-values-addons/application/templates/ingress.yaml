@@ -9,7 +9,7 @@ metadata:
     group: com.stakater.platform
     provider: stakater
     version: "1.0.0"
-    chart: "application-0.0.12"
+    chart: "application-0.0.13"
     release: "RELEASE-NAME"
     heritage: "Tiller"
   annotations:
@@ -17,9 +17,12 @@ metadata:
     forecastle.stakater.com/expose: true
     forecastle.stakater.com/group: Nordmart
     forecastle.stakater.com/icon: https://github.com/stakater/ForecastleIcons/raw/master/stakater.png
-    kubernetes.io/ingress.class: Nordmart
+    ingress.kubernetes.io/force-ssl-redirect: true
+    ingress.kubernetes.io/rewrite-target: /
+    kubernetes.io/ingress.class: external-ingress
     monitor.stakater.com/enabled: true
-    spec:
+    
+spec:
   rules:
     - host: web-NAMESPACE.DOMAIN
       http:
@@ -27,4 +30,4 @@ metadata:
           - path: /
             backend:
               serviceName: web
-              servicePort: 8080
+              servicePort: 4200
