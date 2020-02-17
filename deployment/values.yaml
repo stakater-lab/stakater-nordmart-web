@@ -1,5 +1,7 @@
 applicationName: "web"
 deployment:
+  additionalLabels:
+    appCategory: "frontend"
   annotations:
   podLabels:
     app: web
