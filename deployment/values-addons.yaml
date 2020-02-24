@@ -7,7 +7,7 @@ deployment:
     app: web
   image:
     repository: stakater/stakater-nordmart-web
-    tag: v0.0.5
+    tag: v0.0.7
   probes:
     readinessProbe:
       failureThreshold: 3
