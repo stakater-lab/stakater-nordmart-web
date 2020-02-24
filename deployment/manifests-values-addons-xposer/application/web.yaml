@@ -70,6 +70,8 @@ metadata:
     chart: "application-0.0.13"
     release: "NAMESPACE_NAME-web"
     heritage: "Tiller"
+    appCategory: frontend
+    
   name: web
 spec:
   replicas: 1
