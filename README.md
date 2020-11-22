@@ -13,13 +13,16 @@ It requires following things to be installed:
 
 Environment variables can be provided to configure the customer service.
 
+### Gateway
+
 * SECURE_GW_ENDPOINT - Secure gateway service endpoint.
 * PORT - Port of the web application.
 
-**Keycloak configurations**
-*SSO_URL - Keycloak authentication URL
-*SSO_REALM - Keycloak realm name
-*SSO_CLIENT_ID - Keycloak client
+### KeyCloak
+
+* SSO_URL - Keycloak authentication URL
+* SSO_REALM - Keycloak realm name
+* SSO_CLIENT_ID - Keycloak client
 
 ## Deployment strategy
 
@@ -71,4 +74,6 @@ Helm operator needs to to be running inside the cluster. Helm operator is deploy
 
 To create helm release of this application using the command given below:
 
-kubectl apply -f [helm-release](https://github.com/stakater-lab/nordmart-dev-apps/blob/master/releases/web-helm-release.yaml).yaml -n <namespace-name>
+  ```bash
+  kubectl apply -f [helm-release](https://github.com/stakater-lab/nordmart-dev-apps/blob/master/releases/web-helm-release.yaml).yaml -n <namespace-name>
+  ```
