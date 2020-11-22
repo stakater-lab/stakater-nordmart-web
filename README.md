@@ -9,9 +9,9 @@ It requires following things to be installed:
 * Node: ^8.0.
 * NPM.
 
-## Configurations
+## Dependencies
 
-Environment variables can be provided to configure the customer service.
+Web has two dependencies; and following environment variables must be provided.
 
 ### Gateway
 
