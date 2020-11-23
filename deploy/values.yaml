@@ -1,0 +1,60 @@
+application:
+  applicationName: "web"
+  deployment:
+    imagePullSecrets: nexus-creds
+    additionalLabels:
+      appCategory: "frontend"
+    annotations:
+    volumes: {}
+    image:
+      repository: stakater/stakater-nordmart-web
+      tag: v0.0.7
+    env:
+    - name: PORT
+      value: "4200"
+    - name: SECURE_GW_ENDPOINT
+      value: "https://gateway-NAMESPACE_NAME.DOMAIN"
+    - name: SSO_URL
+      value: "https://keycloak-NAMESPACE_NAME.DOMAIN/auth"
+    - name: SSO_REALM
+      value: "nordmart"
+    - name: SSO_CLIENT_ID
+      value: "stakater-nordmart-web"
+    - name: JAEGER_ENDPOINT
+      value: "http://jaeger-collector.istio-system:14268/api/traces"
+  
+    probes:
+      readinessProbe:
+        failureThreshold: 3
+        periodSeconds: 10
+        successThreshold: 1
+        timeoutSeconds: 1
+        initialDelaySeconds: 10
+        httpGet:
+          path: /health
+          port: 4200
+      livenessProbe:
+        failureThreshold: 3
+        periodSeconds: 10
+        successThreshold: 1
+        timeoutSeconds: 1
+        initialDelaySeconds: 10
+        httpGet:
+          path: /health
+          port: 4200
+  service:
+    ports:
+    - port: 4200
+      name: tcp
+      protocol: TCP
+      targetPort: 4200
+  rbac:
+    create: true
+    serviceAccount:
+      create: true
+      enabled: true
+  configMap:
+   enabled: false
+  route:
+    enabled: true
+  
