@@ -13,9 +13,9 @@ application:
     - name: PORT
       value: "4200"
     - name: SECURE_GW_ENDPOINT
-      value: "https://gateway-NAMESPACE_NAME.DOMAIN"
+      value: "https://gateway-nordmart-dev.apps.binero.06p407u4.kubeapp.cloud"
     - name: SSO_URL
-      value: "https://keycloak-NAMESPACE_NAME.DOMAIN/auth"
+      value: "https://keycloak-nordmart-dev.apps.binero.06p407u4.kubeapp.cloud/auth"
     - name: SSO_REALM
       value: "nordmart"
     - name: SSO_CLIENT_ID
