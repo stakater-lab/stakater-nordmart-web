@@ -44,8 +44,8 @@ application:
           port: 4200
   service:
     ports:
-    - port: 4200
-      name: tcp
+    - port: 8080
+      name: http
       protocol: TCP
       targetPort: 4200
   rbac:
