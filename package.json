@@ -18,7 +18,6 @@
     "test": "jest --coverage --coverageDirectory=coverage/jest",
     "test:watch": "jest --watch",
     "start": "NODE_OPTIONS=--max_old_space_size=8912 && webpack serve --mode development",
-    "start:local": "npm start -- --env KEYCLOAK_REALM=stakater-test --env KEYCLOAK_URL=https://iam.dev.cloud.stakater.com/auth/ --env KEYCLOAK_CLIENT_ID=sro --env APP_BASE_URL=https://localhost:4000 --env PROXY_TARGET=https://api.dev.cloud.stakater.com",
     "build-preview": "webpack --mode production --display-modules",
     "build": "webpack --mode production",
     "build:dev": "webpack --mode development",

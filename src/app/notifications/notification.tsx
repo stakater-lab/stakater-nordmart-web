@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
 import { NOTIFICATION_SELECTORS } from "./notification.redux";
-import { Collapse } from "../shared/components/collapse";
+import { Collapse } from "./collapse";
 
 export const AppNotification = () => {
   const notification = useSelector(NOTIFICATION_SELECTORS.notification);

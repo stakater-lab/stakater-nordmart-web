@@ -1,25 +1,12 @@
 import { store } from "./shared/redux/store";
 import * as ReactDOM from "react-dom";
 import { Provider } from "react-redux";
-import React, { lazy, Suspense } from "react";
-import { doubleStorage } from "./shared/decorators/utils";
-import { AUTH_EPICS, AUTH_STORE_KEY, authReducer, STORED_REALM } from "./auth/auth.redux";
-import { authService } from "./auth/keycloak.service";
+import React from "react";
+import { AUTH_EPICS, AUTH_STORE_KEY, authReducer } from "./auth/auth.redux";
 import { ReduxLoader } from "./shared/routing/redux-loader";
 import { NOTIFICATION_EPICS, NOTIFICATION_REDUX_KEY, notificationReducer } from "./notifications/notification.redux";
-import { LinearProgress } from "@material-ui/core";
 import { GlobalStyle } from "./stakater-theme";
-
-const InitKeycloak = lazy(async () => {
-  const isRealmValid = await authService.checkRealm();
-  if (isRealmValid) {
-    await authService.init();
-    return import("./app");
-  } else {
-    doubleStorage.set(STORED_REALM, "");
-    return import("./auth/welcome");
-  }
-});
+import App from "./app";
 
 ReactDOM.render(
   <Provider store={store}>
@@ -38,9 +25,7 @@ ReactDOM.render(
           },
         ]}
       >
-        <Suspense fallback={<LinearProgress color={"secondary"} />}>
-          <InitKeycloak />
-        </Suspense>
+        <App />
       </ReduxLoader>
     </GlobalStyle>
   </Provider>,

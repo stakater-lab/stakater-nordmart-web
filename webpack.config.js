@@ -112,9 +112,9 @@ module.exports = (env, argv) => {
           manifest: "./site.webmanifest",
         },
       }),
-      new WebpackCopyPlugin({
-        patterns: [{ from: "./robots.txt", to: "robots.txt" }],
-      }),
+      // new WebpackCopyPlugin({
+      //   patterns: [{ from: "./robots.txt", to: "robots.txt" }],
+      // }),
     ].filter(Boolean),
 
     optimization: {
