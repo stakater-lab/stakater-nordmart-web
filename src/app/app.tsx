@@ -1,14 +1,13 @@
-import React, { useEffect } from "react";
-import { Redirect, Route, Switch } from "react-router";
-import { HashRouter } from "react-router-dom";
-import { NotFound } from "./404";
-import { useSelector } from "react-redux";
-import { AUTH_SELECTOR, LoginFailedAction, LoginSuccessAction } from "./auth/auth.redux";
-import { authService } from "./auth/keycloak.service";
-import { store } from "./shared/redux/store";
-import { AppNotification } from "./notifications/notification";
-import { TopMenu } from "./navigation/top-menu";
-import { ClustersModule } from "./clusters/clusters.module";
+import React, {useEffect} from "react";
+import {Route, Switch} from "react-router";
+import {HashRouter} from "react-router-dom";
+import {NotFound} from "./404";
+import {useSelector} from "react-redux";
+import {AUTH_SELECTOR, LoginFailedAction, LoginSuccessAction} from "./auth/auth.redux";
+import {authService} from "./auth/keycloak.service";
+import {store} from "./shared/redux/store";
+import {AppNotification} from "./notifications/notification";
+import {TopMenu} from "./navigation/top-menu";
 
 export const App = () => {
   const isAuthorized = useSelector(AUTH_SELECTOR.isAuthorized);
@@ -27,15 +26,13 @@ export const App = () => {
 
   return (
     <HashRouter>
-      <AppNotification />
-      <TopMenu />
+      <AppNotification/>
+      <TopMenu/>
 
       <Switch>
-        <Redirect exact to="/clusters" from="/" />
-        {ClustersModule}
 
         <Route>
-          <NotFound />
+          <NotFound/>
         </Route>
       </Switch>
     </HashRouter>

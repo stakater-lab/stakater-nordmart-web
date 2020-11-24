@@ -4,8 +4,8 @@ import URI from "urijs";
 import { throwError } from "rxjs";
 import { catchError, map } from "rxjs/operators";
 import { store } from "../redux/store";
-import { UnauthorizedAccessAction } from "../app/auth/auth.redux";
-import { authService } from "../app/auth/keycloak.service";
+import {UnauthorizedAccessAction} from "../../auth/auth.redux";
+import {authService} from "../../auth/keycloak.service";
 
 export interface IHttpOptions {
   params?: { [key: string]: string };
