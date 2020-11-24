@@ -15,7 +15,7 @@ application:
     - name: SECURE_GW_ENDPOINT
       value: "https://gateway-nordmart-dev.apps.binero.06p407u4.kubeapp.cloud"
     - name: SSO_URL
-      value: "https://keycloak-nordmart-dev.apps.binero.06p407u4.kubeapp.cloud/auth"
+      value: "https://iam-keycloak-nordmart-dev.apps.binero.06p407u4.kubeapp.cloud/auth/"
     - name: SSO_REALM
       value: "nordmart"
     - name: SSO_CLIENT_ID
