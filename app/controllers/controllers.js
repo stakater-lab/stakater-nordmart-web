@@ -1,11 +1,17 @@
 'use strict';
 
 angular.module('app')
-
     .controller("HomeController",
-        ['$scope', '$http', '$filter', 'Notifications', 'cart', 'catalog', 'review', 'search', 'Auth', '$uibModal',
-            function ($scope, $http, $filter, Notifications, cart, catalog, review, search, $auth, $uibModal) {
+        ['$scope', '$http', '$filter', 'Notifications', 'cart', 'catalog', 'review', 'search', 'Auth', '$uibModal', 'promotions',
+            function ($scope, $http, $filter, Notifications, cart, catalog, review, search, $auth, $uibModal, promotions) {
 
+                promotions.get().then((promos) => {
+                    $scope.promotions = promos;
+                });
+
+                $scope.getProductPromotion = (productId) => {
+                    return $scope.promotions ? $scope.promotions.find(p => p.itemId === productId) : undefined;
+                }
 
                 var ratings = new Map();
                 var reviews = new Map();
@@ -125,7 +131,7 @@ angular.module('app')
 
 
                 // open dialog with product details
-                $scope.openProductDetails = function (product, reviews) {
+                $scope.openProductDetails = function (product, reviews, promotion) {
                     var modalInstance = $uibModal.open({
                         templateUrl: 'product.html',
                         controller: 'ProductModalController',
@@ -135,6 +141,9 @@ angular.module('app')
                             },
                             reviews: function () {
                                 return reviews;
+                            },
+                            discount: function () {
+                                return promotion;
                             }
                         }
                     });
@@ -143,10 +152,11 @@ angular.module('app')
 
             }])
 
-    .controller("ProductModalController", ['$scope', 'Auth', '$uibModalInstance', 'product', 'reviews',
-        function ($scope, $auth, $uibModalInstance, product, reviews) {
+    .controller("ProductModalController", ['$scope', 'Auth', '$uibModalInstance', 'product', 'reviews', 'discount',
+        function ($scope, $auth, $uibModalInstance, product, reviews, discount) {
             $scope.product = product;
             $scope.reviews = reviews;
+            $scope.promotion = discount;
             $scope.close = function () {
                 $uibModalInstance.close('close');
             };
@@ -162,9 +172,8 @@ angular.module('app')
         }])
 
     .controller("CartController",
-        ['$scope', '$http', 'Notifications', 'cart', 'Auth',
+        ['$scope', '$http', 'Notifications', 'cart', 'Auth', 'promotions',
             function ($scope, $http, Notifications, cart, $auth) {
-
                 function reset() {
                     $scope.cart = cart.getCart();
                     $scope.items = $scope.cart.shoppingCartItemList;
@@ -188,7 +197,7 @@ angular.module('app')
                     }, function (err) {
                         Notifications.error("Error removing from cart: " + err.statusText);
                     });
-                };
+                }
 
                 $scope.actionButtons = [
                     {

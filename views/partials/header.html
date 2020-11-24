@@ -39,11 +39,12 @@
           <a title="SSO has not been configured" ng-if="!ssoEnabled()"><span class="fa fa-warning"></span>&nbsp;Sign In Unavailable</a>
         </li>
       </ul>
-      <ul class="nav navbar-nav navbar-primary">
+      <ul class="nav navbar-nav navbar-primary" style="display: flex">
         <li ng-class="{ active: isActive('/')}">
           <a ng-href="#/" class="active">Stakater Nordmart Store</a>
         </li>
-          <li ng-class="{ active: isActive('/cart')}">
+
+          <li style="margin-left: auto" ng-class="{ active: isActive('/cart')}">
           <a ng-href="#/cart">Your Shopping Cart</a>
         </li>
       </ul>
