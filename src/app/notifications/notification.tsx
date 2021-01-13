@@ -2,29 +2,39 @@ import React from "react";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
 import { NOTIFICATION_SELECTORS } from "./notification.redux";
-import { Collapse } from "./collapse";
+import { Box, Container } from "@material-ui/core";
+import { AnimatePresence, motion } from "framer-motion";
 
 export const AppNotification = () => {
   const notification = useSelector(NOTIFICATION_SELECTORS.notification);
   return (
-    <Collapse isOpen={!!notification}>
+    <AnimatePresence>
       {notification && (
-        <NotificationContainer className={`notification-${notification.type}`}>
-          {notification.message}
+        <NotificationContainer
+          className={`notification-${notification.type}`}
+          initial={{ opacity: 0, height: 0 }}
+          animate={{ opacity: 1, height: "auto" }}
+          exit={{ opacity: 0, height: 0 }}
+        >
+          <Container style={{ display: "flex" }} fixed maxWidth={"md"}>
+            <Box display="flex" marginLeft="auto" marginRight="auto">
+              {notification.message}
+            </Box>
+          </Container>
         </NotificationContainer>
       )}
-    </Collapse>
+    </AnimatePresence>
   );
 };
 
-const NotificationContainer = styled.div`
+const NotificationContainer = styled(motion.div)`
   display: block;
+  position: relative;
   z-index: 1400;
   padding: 4px 12px;
   color: white;
-  text-align: center;
   background-color: mediumseagreen;
-  width: 100%;
+  width: 100vw;
 
   &.dismiss-icon {
     position: absolute;

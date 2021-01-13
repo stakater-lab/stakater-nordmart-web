@@ -1,6 +1,6 @@
 import { Action } from "nested-combine-reducers/dist/types";
-import { CallBack } from "../../typings";
 import { Observable } from "rxjs";
+import {CallBack} from "../../typings";
 
 export interface IApiAction extends Action {
   api$: Observable<any>;

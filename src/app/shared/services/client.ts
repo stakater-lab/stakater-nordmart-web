@@ -1,9 +1,17 @@
-import { ajaxDelete, AjaxError, AjaxObservable, ajaxPost, ajaxPut, AjaxResponse } from "rxjs/internal-compatibility";
+import {
+  ajaxDelete,
+  AjaxError,
+  AjaxObservable,
+  ajaxPost,
+  ajaxPut,
+  AjaxResponse,
+  fromPromise,
+} from "rxjs/internal-compatibility";
 import URITemplate from "urijs/src/URITemplate";
 import URI from "urijs";
-import { throwError } from "rxjs";
-import { catchError, map } from "rxjs/operators";
-import { store } from "../redux/store";
+import { of, throwError } from "rxjs";
+import { catchError, map, switchMap } from "rxjs/operators";
+import {store} from "../redux/store";
 import {UnauthorizedAccessAction} from "../../auth/auth.redux";
 import {authService} from "../../auth/keycloak.service";
 
@@ -39,57 +47,83 @@ const graphQlErrorMapper = (response: AjaxResponse) => {
 
 class HttpClient {
   get token() {
-    return authService.keyCloak.token;
+    return authService.keyCloak?.token;
   }
 
   public getDefaultHeaders(options: IHttpOptions) {
-    return {
-      "Content-Type": "application/json",
-      ...(!options.disableAuth && this.token
-        ? {
+    if (!authService.keyCloak?.authenticated || options.disableAuth) {
+      return of({
+        "Content-Type": "application/json",
+      });
+    } else {
+      return fromPromise(
+        authService.keyCloak.updateToken(10).then(() => {
+          return {
+            "Content-Type": "application/json",
             Authorization: `Bearer ${this.token}`,
-          }
-        : {}),
-    };
+          };
+        }),
+      );
+    }
   }
 
   public get(url: string, options: IHttpOptions = {}) {
-    return new AjaxObservable<AjaxResponse>({
-      method: "GET",
-      url: this.transformUri(url, options),
-      responseType: options.responseType || "json",
-      headers: { ...this.getDefaultHeaders(options), ...(options.headers || {}) },
-    }).pipe(catchError(globalErrorHandler));
+    return this.getDefaultHeaders(options).pipe(
+      switchMap((headers) =>
+        new AjaxObservable<AjaxResponse>({
+          method: "GET",
+          url: this.transformUri(url, options),
+          responseType: options.responseType || "json",
+          headers: { ...headers, ...(options.headers || {}) },
+        }).pipe(catchError(globalErrorHandler)),
+      ),
+    );
   }
 
   public post(url: string, body?: any, options: IHttpOptions = {}) {
-    return ajaxPost(this.transformUri(url, options), body, {
-      ...this.getDefaultHeaders(options),
-      ...(options.headers || {}),
-    }).pipe(catchError(globalErrorHandler));
+    return this.getDefaultHeaders(options).pipe(
+      switchMap((headers) =>
+        ajaxPost(this.transformUri(url, options), body, {
+          ...headers,
+          ...(options.headers || {}),
+        }).pipe(catchError(globalErrorHandler)),
+      ),
+    );
   }
 
   public postGraphQl(url: string, body?: any, options: IHttpOptions = {}) {
-    return ajaxPost(this.transformUri(url, options), this.transformBody(body), {
-      ...this.getDefaultHeaders(options),
-      ...(options.headers || {}),
-    })
-      .pipe(catchError(globalErrorHandler))
-      .pipe(map(graphQlErrorMapper));
+    return this.getDefaultHeaders(options).pipe(
+      switchMap((headers) =>
+        ajaxPost(this.transformUri(url, options), this.transformBody(body), {
+          ...headers,
+          ...(options.headers || {}),
+        })
+          .pipe(catchError(globalErrorHandler))
+          .pipe(map(graphQlErrorMapper)),
+      ),
+    );
   }
 
   public delete(url: string, options: IHttpOptions = {}) {
-    return ajaxDelete(this.transformUri(url, options), {
-      ...this.getDefaultHeaders(options),
-      ...(options.headers || {}),
-    }).pipe(catchError(globalErrorHandler));
+    return this.getDefaultHeaders(options).pipe(
+      switchMap((headers) =>
+        ajaxDelete(this.transformUri(url, options), {
+          ...headers,
+          ...(options.headers || {}),
+        }).pipe(catchError(globalErrorHandler)),
+      ),
+    );
   }
 
   public put(url: string, body?: any, options: IHttpOptions = {}) {
-    return ajaxPut(this.transformUri(url, options), body, {
-      ...this.getDefaultHeaders(options),
-      ...(options.headers || {}),
-    }).pipe(catchError(globalErrorHandler));
+    return this.getDefaultHeaders(options).pipe(
+      switchMap((headers) =>
+        ajaxPut(this.transformUri(url, options), body, {
+          ...headers,
+          ...(options.headers || {}),
+        }).pipe(catchError(globalErrorHandler)),
+      ),
+    );
   }
 
   public transformUri(url: string, uriSpecs: IHttpOptions = {}): string {

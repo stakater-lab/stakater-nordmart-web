@@ -1,10 +1,8 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
 const webpack = require("webpack");
 const path = require("path");
 
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
-const WebpackCopyPlugin = require("copy-webpack-plugin");
 const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 const proxy = require("./proxy.config");
 
@@ -69,7 +67,7 @@ module.exports = (env, argv) => {
           exclude: path.join(sourcePath, "index.html"),
         },
         {
-          test: /\.(gif|png|jpg)$/,
+          test: /\.(gif|png|jpg|jpeg)$/,
           loader: "url-loader",
           options: {
             limit: 8192,
@@ -80,7 +78,7 @@ module.exports = (env, argv) => {
           use: ["@svgr/webpack"],
         },
         {
-          test: /\.(jpe?g|bmp|mp3|mp4|ogg|wav|eot|ttf|woff|woff2)$/,
+          test: /\.(bmp|mp3|mp4|ogg|wav|eot|ttf|woff|woff2)$/,
           loader: "file-loader",
           options: {
             outputPath: "assets",
@@ -92,9 +90,12 @@ module.exports = (env, argv) => {
     plugins: [
       new webpack.DefinePlugin({
         PRODUCTION: !isDev,
-        KEYCLOAK_URL: JSON.stringify(env.KEYCLOAK_URL),
+        SECURE_GW_ENDPOINT: JSON.stringify(env.SECURE_GW_ENDPOINT),
+        PORT: JSON.stringify(env.PORT),
+        SSO_URL: JSON.stringify(env.SSO_URL),
+        SSO_REALM: JSON.stringify(env.SSO_REALM),
+        SSO_CLIENT_ID: JSON.stringify(env.SSO_CLIENT_ID),
         APP_BASE_URL: JSON.stringify(env.APP_BASE_URL),
-        KEYCLOAK_CLIENT_ID: JSON.stringify(env.KEYCLOAK_CLIENT_ID),
       }),
       !isDev &&
         new BundleAnalyzerPlugin({
@@ -112,9 +113,6 @@ module.exports = (env, argv) => {
           manifest: "./site.webmanifest",
         },
       }),
-      // new WebpackCopyPlugin({
-      //   patterns: [{ from: "./robots.txt", to: "robots.txt" }],
-      // }),
     ].filter(Boolean),
 
     optimization: {

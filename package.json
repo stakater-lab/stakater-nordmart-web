@@ -15,23 +15,14 @@
   "author": "Quang Vu",
   "license": "MIT",
   "scripts": {
-    "test": "jest --coverage --coverageDirectory=coverage/jest",
-    "test:watch": "jest --watch",
     "start": "NODE_OPTIONS=--max_old_space_size=8912 && webpack serve --mode development",
-    "build-preview": "webpack --mode production --display-modules",
-    "build": "webpack --mode production",
-    "build:dev": "webpack --mode development",
-    "lint": "eslint '**/*.{ts,tsx}'",
-    "build-e2e": "rm -rf out-tsc && tsc -p testcafe/tsconfig.e2e.json",
-    "e2e": "npm run build-e2e && node out-tsc/test-runner.js",
-    "e2e:pipeline": "npm run build-e2e && PIPELINE=true node out-tsc/test-runner.js"
+    "build": "webpack --mode production"
   },
   "dependencies": {
     "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.9.1",
     "@material-ui/lab": "^4.0.0-alpha.56",
     "@stakater/fragments": "0.0.0",
-    "basscss": "^8.1.0",
     "clsx": "^1.1.1",
     "final-form": "^4.20.1",
     "final-form-arrays": "^3.0.2",

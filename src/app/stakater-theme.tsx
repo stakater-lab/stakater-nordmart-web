@@ -2,7 +2,6 @@ import { createMuiTheme } from "@material-ui/core";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import React, { PropsWithChildren } from "react";
 import { ThemeProvider } from "@material-ui/core/styles";
-import "../styles/app-global.scss";
 
 const Raleway = {
   fontFamily: "Raleway",
@@ -13,38 +12,14 @@ const Raleway = {
     url(${require("../assets/fonts/raleway-v18-latin/raleway-v18-latin-regular.woff").default}) format('woff');`,
 };
 
-const MontserratRegular = {
+const Montserrat = [400, 500, 600, 700].map(size => ({
   fontFamily: "Montserrat",
   fontStyle: "normal",
-  fontWeight: 400,
+  fontWeight: size,
   src: `local(''),
-    url(${require("../assets/fonts/montserrat-v15-latin/montserrat-v15-latin-regular.woff2").default}) format('woff2'),
-    url(${require("../assets/fonts/montserrat-v15-latin/montserrat-v15-latin-regular.woff").default}) format('woff')`,
-};
-const MontserratMedium = {
-  fontFamily: "Montserrat",
-  fontStyle: "normal",
-  fontWeight: 500,
-  src: `local(''),
-    url(${require("../assets/fonts/montserrat-v15-latin/montserrat-v15-latin-500.woff2").default}) format('woff2'),
-    url(${require("../assets/fonts/montserrat-v15-latin/montserrat-v15-latin-500.woff").default}) format('woff')`,
-};
-const MontserratSemiBold = {
-  fontFamily: "Montserrat",
-  fontStyle: "normal",
-  fontWeight: 600,
-  src: `local(''),
-    url(${require("../assets/fonts/montserrat-v15-latin/montserrat-v15-latin-600.woff2").default}) format('woff2'),
-    url(${require("../assets/fonts/montserrat-v15-latin/montserrat-v15-latin-600.woff").default}) format('woff')`,
-};
-const MontserratBold = {
-  fontFamily: "Montserrat",
-  fontStyle: "normal",
-  fontWeight: 700,
-  src: `local(''),
-    url(${require("../assets/fonts/montserrat-v15-latin/montserrat-v15-latin-700.woff2").default}) format('woff2'),
-    url(${require("../assets/fonts/montserrat-v15-latin/montserrat-v15-latin-700.woff").default}) format('woff')`,
-};
+    url(${require(`../assets/fonts/montserrat-v15-latin/montserrat-v15-latin-${size}.woff2`).default}) format('woff2'),
+    url(${require(`../assets/fonts/montserrat-v15-latin/montserrat-v15-latin-${size}.woff`).default}) format('woff')`,
+}))
 
 export const MuiOverride = createMuiTheme({
   palette: {
@@ -62,21 +37,35 @@ export const MuiOverride = createMuiTheme({
   },
   typography: {
     fontFamily: "Montserrat, sans-serif",
-    fontSize: 14,
+    htmlFontSize: 14,
+    fontSize: 12,
     button: {
       textTransform: "capitalize",
       whiteSpace: "nowrap",
-      fontWeight: "bold",
+      fontFamily: "Montserrat, sans-serif",
     },
     fontWeightRegular: 400,
     fontWeightBold: 700,
     fontWeightMedium: 500,
-    h1: {},
-    h2: {},
-    h3: {},
-    h4: {},
-    h5: {},
-    h6: {},
+    h1: {
+      textTransform: "uppercase",
+    },
+    h2: {
+      textTransform: "uppercase",
+    },
+    h3: {
+      textTransform: "uppercase",
+    },
+    h4: {
+      textTransform: "uppercase",
+      fontWeight: "bold"
+    },
+    h5: {
+      // textTransform: "uppercase",
+    },
+    h6: {
+      textTransform: "uppercase",
+    },
     subtitle1: {},
     subtitle2: {},
     body1: {},
@@ -86,11 +75,11 @@ export const MuiOverride = createMuiTheme({
   },
   props: {
     MuiAppBar: {
-      elevation: 1,
+      elevation: 0,
       color: "default",
+      position: "sticky"
     },
     MuiToolbar: {
-      variant: "dense",
       disableGutters: true,
     },
     MuiTable: {
@@ -125,21 +114,18 @@ export const MuiOverride = createMuiTheme({
         },
       },
     },
+    MuiOutlinedInput: {
+      margin: "dense",
+    },
   },
   overrides: {
     MuiCssBaseline: {
       "@global": {
-        "@font-face": [Raleway, MontserratRegular, MontserratMedium, MontserratSemiBold, MontserratBold],
+        "@font-face": [Raleway, ...Montserrat],
       },
     },
 
     MuiAppBar: {
-      root: {
-        height: 50,
-        display: "flex",
-        flexDirection: "row",
-        zIndex: 1300,
-      },
       colorDefault: {
         background: "linear-gradient(220.21deg, #3e0054 15%, #fd7401 75.99%, #f89a02)",
         color: "white",
@@ -172,6 +158,11 @@ export const MuiOverride = createMuiTheme({
       root: {
         borderRadius: 0,
       },
+      label: {
+        "& svg": {
+          marginRight: "0.25rem",
+        },
+      },
     },
     MuiTouchRipple: {
       root: {
@@ -197,7 +188,6 @@ export const MuiOverride = createMuiTheme({
         color: "inherit",
       },
     },
-
     MuiLinearProgress: {
       barColorPrimary: {
         backgroundColor: "inherit",
@@ -207,6 +197,14 @@ export const MuiOverride = createMuiTheme({
         backgroundColor: "inherit",
       },
     },
+  },
+  shape: {
+    borderRadius: 0
+  },
+  mixins: {
+    toolbar: {
+      minHeight: 65
+    }
   },
 });
 

@@ -1,41 +1,43 @@
 import Keycloak, {KeycloakInstance} from "keycloak-js";
 import {deserialize} from "../shared/decorators/property-mapper";
 import {Session} from "./Session";
-import {doubleStorage} from "../shared/decorators/utils";
-import {STORED_REALM} from "./auth.redux";
 import {fromPromise} from "rxjs/internal-compatibility";
-import {catchError, mapTo} from "rxjs/operators";
-import {of} from "rxjs";
-import {httpClient} from "../shared/services/client";
-import {API} from "../shared/services/api";
 
-declare const KEYCLOAK_URL: string;
-declare const KEYCLOAK_CLIENT_ID: string;
+declare const SSO_REALM: string;
+declare const SSO_URL: string;
+declare const SSO_CLIENT_ID: string;
 declare const APP_BASE_URL: string;
+
+console.info({
+  SSO_REALM,
+  SSO_URL,
+  SSO_CLIENT_ID,
+  APP_BASE_URL
+})
 
 class KeycloakService {
   keyCloak: KeycloakInstance;
 
-  checkSSSO(realm: string = doubleStorage.get(STORED_REALM)) {
+  checkSSSO(realm: string = SSO_REALM) {
     return Keycloak({
       realm,
-      url: KEYCLOAK_URL,
-      clientId: KEYCLOAK_CLIENT_ID,
+      url: SSO_URL,
+      clientId: SSO_CLIENT_ID,
     }).init({
       onLoad: "check-sso",
       redirectUri: APP_BASE_URL,
     });
   }
 
-  async init(realm: string = doubleStorage.get(STORED_REALM)) {
+  async init(realm: string = SSO_REALM) {
     this.keyCloak = Keycloak({
       realm,
-      url: KEYCLOAK_URL,
-      clientId: KEYCLOAK_CLIENT_ID,
+      url: SSO_URL,
+      clientId: SSO_CLIENT_ID,
     });
 
     try {
-      await this.keyCloak.init({
+      return await this.keyCloak.init({
         onLoad: "login-required",
         redirectUri: window.location.href,
       });
@@ -57,16 +59,6 @@ class KeycloakService {
         redirectUri: APP_BASE_URL,
       }),
     );
-  }
-
-  checkRealm(realmName = doubleStorage.get(STORED_REALM)) {
-    return httpClient
-      .get(API.validateRealm, {params: {realmName}, disableAuth: true})
-      .pipe(
-        mapTo(true),
-        catchError(() => of(false)),
-      )
-      .toPromise();
   }
 }
 

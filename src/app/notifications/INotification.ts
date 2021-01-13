@@ -1,5 +1,6 @@
+export type NotificationType = "success" | "error" | "warning" | "info";
 export interface INotification {
   message: string;
-  type: "success" | "error" | "warning" | "info";
+  type: NotificationType;
   duration: number;
 }
