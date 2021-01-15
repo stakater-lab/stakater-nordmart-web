@@ -16,6 +16,7 @@
   "license": "MIT",
   "scripts": {
     "start": "NODE_OPTIONS=--max_old_space_size=8912 && webpack serve --mode development",
+    "start:dev": "npm start -- --env SECURE_GW_ENDPOINT=https://gateway-veeru-dev.apps.binero.06p407u4.kubeapp.cloud --env SSO_URL=https://iam-keycloak-veeru-dev.apps.devtest.41b996e9.kubeapp.cloud/auth/ --env SSO_CLIENT_ID=stakater-nordmart-web --env SSO_REALM=nordmart",
     "build": "webpack --mode production"
   },
   "dependencies": {
