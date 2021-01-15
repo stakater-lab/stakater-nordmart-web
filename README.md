@@ -34,7 +34,11 @@ npm install
 and then start the application using:
 
 ```bash
-npm start
+npm start --
+--env SECURE_GW_ENDPOINT={Secure gateway service endpoint}
+--env SSO_URL= {Keycloak authentication URL}
+--env SSO_REALM= {Keycloak realm name}
+--env SSO_CLIENT_ID= {Keycloak client}
 ```
 
 ### Docker
