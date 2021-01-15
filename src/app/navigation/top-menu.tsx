@@ -1,12 +1,27 @@
 import React from "react";
-import {AppBar, Badge, Box, Button, Container, Toolbar, Typography} from "@material-ui/core";
+import {AppBar, Box, Button, Container, Toolbar, Typography} from "@material-ui/core";
 import StakaterLogo from "../../assets/img/stakater-icon.svg";
-import {AccountCircle, ShoppingCart, Store} from "@material-ui/icons";
-import {ProductSearch} from "../pages/store/product-search";
+import {AccountCircle, ExitToApp, Store} from "@material-ui/icons";
+import {ProductSearch} from "../pages/search/product-search";
+import {authService} from "../auth/keycloak.service";
+import {store} from "../shared/redux/store";
+import {LoginAction, LogOutAction} from "../auth/auth.redux";
+import {AppNotification} from "../notifications/notification";
+import {NavMenu} from "./NavMenu";
+import {CartMenu} from "../pages/cart/cart-menu";
 
 export const TopMenu = () => {
+  const login = () => {
+    store.dispatch(new LoginAction());
+  }
+
+  const logout = () => {
+    store.dispatch(new LogOutAction());
+  }
+
   return (
     <AppBar>
+      <AppNotification/>
       <Container>
         <Toolbar>
           <Box display="flex" marginRight="auto">
@@ -19,27 +34,26 @@ export const TopMenu = () => {
             <ProductSearch/>
           </Box>
 
-          <Box color="white" marginRight={1}>
-            <Button color={"inherit"}>
-              <Store/>
-              Shop
-            </Button>
-          </Box>
+          <NavMenu menu={{
+            name: "Shop",
+            icon: <Store color={"inherit"}/>,
+            path: "/store"
+          }}/>
 
-          <Box color="white" marginRight={1}>
-            <Badge badgeContent={4} color="error">
-              <Button color={"inherit"}>
-                <ShoppingCart/>
-                Cart
-              </Button>
-            </Badge>
-          </Box>
+          <CartMenu/>
 
           <Box color="white">
-            <Button color={"inherit"}>
-              <AccountCircle/>
-              Signin
-            </Button>
+            {authService.keyCloak?.authenticated ? (
+              <Button color={"inherit"} onClick={logout}>
+                <ExitToApp/>
+                Logout
+              </Button>
+            ) : (
+              <Button color={"inherit"} onClick={login}>
+                <AccountCircle/>
+                Login
+              </Button>
+            )}
           </Box>
         </Toolbar>
       </Container>

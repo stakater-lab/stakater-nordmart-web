@@ -94,8 +94,7 @@ module.exports = (env, argv) => {
         PORT: JSON.stringify(env.PORT),
         SSO_URL: JSON.stringify(env.SSO_URL),
         SSO_REALM: JSON.stringify(env.SSO_REALM),
-        SSO_CLIENT_ID: JSON.stringify(env.SSO_CLIENT_ID),
-        APP_BASE_URL: JSON.stringify(env.APP_BASE_URL),
+        SSO_CLIENT_ID: JSON.stringify(env.SSO_CLIENT_ID)
       }),
       !isDev &&
         new BundleAnalyzerPlugin({

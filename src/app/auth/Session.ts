@@ -1,12 +1,24 @@
-import { jsonProperty } from "../shared/decorators/json-property";
+import {jsonProperty} from "../shared/decorators/json-property";
 
 export class Session {
   @jsonProperty()
-  username: string;
+  email: string;
 
   @jsonProperty()
-  token: string;
+  email_verified: boolean;
 
   @jsonProperty()
-  tokenExpiration: string;
+  family_name: string;
+
+  @jsonProperty()
+  given_name: string;
+
+  @jsonProperty()
+  name: string;
+
+  @jsonProperty()
+  preferred_username: string;
+
+  @jsonProperty()
+  sub: string;
 }

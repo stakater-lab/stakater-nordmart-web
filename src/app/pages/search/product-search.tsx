@@ -5,7 +5,7 @@ import {
   ClickAwayListener,
   fade,
   List,
-  ListItem,
+  ListItem, ListItemAvatar,
   ListItemText,
   OutlinedInput,
   OutlinedInputProps,
@@ -16,10 +16,11 @@ import {
 import { Search } from "@material-ui/icons";
 import { AnimatePresence } from "framer-motion";
 import { SlideDown } from "../../shared/animation/slide-down";
-import { Product } from "./Product";
+import { Product } from "../store/Product";
 import debounce from "lodash/debounce";
-import { productSearchAPI } from "./store.service";
+import { productSearchAPI } from "../store/store.service";
 import { Subscription } from "rxjs";
+import {IMAGE_MAP} from "../store/product-images";
 
 export const ProductSearch = () => {
   const [anchorEl, setAnchorEl] = useState<any>(null);
@@ -102,6 +103,9 @@ export const ProductSearch = () => {
                       <List>
                         {results.map((p) => (
                           <ListItem button key={p.itemId}>
+                            <ListItemAvatar>
+                              <img src={IMAGE_MAP[p.name]}/>
+                            </ListItemAvatar>
                             <ListItemText>{p.name}</ListItemText>
                           </ListItem>
                         ))}

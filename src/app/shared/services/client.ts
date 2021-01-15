@@ -9,10 +9,8 @@ import {
 } from "rxjs/internal-compatibility";
 import URITemplate from "urijs/src/URITemplate";
 import URI from "urijs";
-import { of, throwError } from "rxjs";
-import { catchError, map, switchMap } from "rxjs/operators";
-import {store} from "../redux/store";
-import {UnauthorizedAccessAction} from "../../auth/auth.redux";
+import {of, throwError} from "rxjs";
+import {catchError, map, switchMap} from "rxjs/operators";
 import {authService} from "../../auth/keycloak.service";
 
 export interface IHttpOptions {
@@ -24,10 +22,6 @@ export interface IHttpOptions {
 }
 
 const globalErrorHandler = (error: AjaxError) => {
-  if (error.status === 401) {
-    store.dispatch(new UnauthorizedAccessAction());
-  }
-
   return throwError(error);
 };
 
@@ -74,7 +68,7 @@ class HttpClient {
           method: "GET",
           url: this.transformUri(url, options),
           responseType: options.responseType || "json",
-          headers: { ...headers, ...(options.headers || {}) },
+          headers: {...headers, ...(options.headers || {})},
         }).pipe(catchError(globalErrorHandler)),
       ),
     );

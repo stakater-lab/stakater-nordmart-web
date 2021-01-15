@@ -2,12 +2,19 @@ import React, {useEffect} from 'react';
 import {Box, BoxProps, Container, Grid, styled, Typography} from "@material-ui/core";
 import suppliesBg from "../../../assets/img/supplies.jpg";
 import {store} from "../../shared/redux/store";
-import {GetProductsAction, STORE_SELECTORS} from "./store.redux";
+import {GetProductsAction, STORE_SELECTORS} from "../store/store.redux";
 import {useSelector} from "react-redux";
-import {ProductComponent} from "./product-component";
+import {ProductComponent} from "../store/product-component";
+import {Route, useHistory} from "react-router";
+import {ProductHighlight} from "../store/product-highlight";
 
-export const StoreComponent = () => {
+export const ProductCatalog = () => {
+  const history = useHistory();
   const products = useSelector(STORE_SELECTORS.products);
+
+  const closeHighLight = () => {
+    history.push("/store");
+  }
 
   useEffect(() => {
     store.dispatch(new GetProductsAction());
@@ -36,6 +43,10 @@ export const StoreComponent = () => {
           </Grid>
         </Box>
       </Container>
+
+      <Route exact path={`/store/:productId`}>
+        <ProductHighlight onClose={closeHighLight}/>
+      </Route>
     </>
   );
 };

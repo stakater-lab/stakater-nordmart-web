@@ -197,6 +197,11 @@ export const MuiOverride = createMuiTheme({
         backgroundColor: "inherit",
       },
     },
+    MuiLink: {
+      root: {
+        textDecoration: "none"
+      }
+    }
   },
   shape: {
     borderRadius: 0

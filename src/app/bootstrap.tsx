@@ -1,21 +1,22 @@
-import { store } from "./shared/redux/store";
+import {store} from "./shared/redux/store";
 import * as ReactDOM from "react-dom";
-import { Provider } from "react-redux";
-import React, { lazy, Suspense } from "react";
-import { AUTH_EPICS, AUTH_STORE_KEY, authReducer } from "./auth/auth.redux";
-import { ReduxLoader } from "./shared/routing/redux-loader";
-import { NOTIFICATION_EPICS, NOTIFICATION_REDUX_KEY, notificationReducer } from "./notifications/notification.redux";
-import { GlobalStyle } from "./stakater-theme";
-import { STORE_EPICS, STORE_REDUX_KEY, storeReducer } from "./pages/store/store.redux";
-import { LinearProgress } from "@material-ui/core";
-import { authService } from "./auth/keycloak.service";
+import {Provider} from "react-redux";
+import React, {lazy, Suspense} from "react";
+import {AUTH_EPICS, AUTH_STORE_KEY, authReducer, LoginAction, LoginSuccessAction} from "./auth/auth.redux";
+import {ReduxLoader} from "./shared/routing/redux-loader";
+import {NOTIFICATION_EPICS, NOTIFICATION_REDUX_KEY, notificationReducer} from "./notifications/notification.redux";
+import {GlobalStyle} from "./stakater-theme";
+import {STORE_EPICS, STORE_REDUX_KEY, storeReducer} from "./pages/store/store.redux";
+import {LinearProgress} from "@material-ui/core";
+import {authService} from "./auth/keycloak.service";
+import {CART_EPICS, CART_REDUX_KEY, cartReducer} from "./pages/cart/cart.redux";
 
 const InitKeycloak = lazy(async () => {
-  const isRealmValid: boolean = await authService.init();
-  if (isRealmValid) {
-  } else {
+  await authService.checkSSSO();
+  if (authService.keyCloak.authenticated) {
+    await authService.keyCloak.loadUserInfo();
+    store.dispatch(new LoginSuccessAction(new LoginAction(), authService.userInfo!));
   }
-
   return import("./app");
 });
 
@@ -39,10 +40,15 @@ ReactDOM.render(
             reducer: storeReducer,
             epics: STORE_EPICS,
           },
+          {
+            key: CART_REDUX_KEY,
+            reducer: cartReducer,
+            epics: CART_EPICS,
+          },
         ]}
       >
-        <Suspense fallback={<LinearProgress color={"secondary"} />}>
-          <InitKeycloak />
+        <Suspense fallback={<LinearProgress color={"secondary"}/>}>
+          <InitKeycloak/>
         </Suspense>
       </ReduxLoader>
     </GlobalStyle>
