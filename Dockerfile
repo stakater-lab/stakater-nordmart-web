@@ -1,27 +1,27 @@
-# base image
-FROM node:8.9.3-alpine
+# BUILD APP
+FROM node:15 as build
+WORKDIR /app
+COPY . .
 
-# set working directory
-RUN mkdir -p /usr/src/app
-WORKDIR /usr/src/app
-
-# add `/usr/src/app/node_modules/.bin` to $PATH
-ENV PATH /usr/src/app/node_modules/.bin:$PATH
-
-RUN apk update && apk upgrade && \
-    apk add --no-cache bash git openssh
-
-COPY . /usr/src/app/
-
-RUN chown 1001:1001 /usr/src/app && \
-    mkdir /.npm && chown 1001:1001 /.npm && \
-    mkdir /.config && chown 1001:1001 /.config && \
-    mkdir /.cache && chown 1001:1001 /.cache && \
-    mkdir /.local && chown 1001:1001 /.local
-
-USER 1001
+ARG SECURE_GW_ENDPOINT
+ARG SSO_URL
+ARG SSO_CLIENT_ID
+ARG SSO_REALM
+ARG NGINX_PORT
 
 RUN npm install
+RUN npm run build -- \
+    --env SECURE_GW_ENDPOINT=$SECURE_GW_ENDPOINT \
+    --env SSO_URL=$SSO_URL \
+    --env SSO_CLIENT_ID=$SSO_CLIENT_ID \
+    --env SSO_REALM=$SSO_REALM
 
-# start app
-CMD ["npm", "start"]
+## SETUP NGINX
+FROM nginx
+COPY --from=build /app/dist /usr/share/nginx/html
+COPY --from=build /app/nginx.template /etc/nginx/templates/
+
+EXPOSE $NGINX_PORT
+
+# START SERVER
+CMD ["nginx", "-g", "daemon off;"]
