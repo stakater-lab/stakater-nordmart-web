@@ -6,8 +6,8 @@ application:
     - nameSuffix: ""
       data:
         PORT: "4200"
-        SECURE_GW_ENDPOINT: "https://gateway-veeru-dev.apps.binero.06p407u4.kubeapp.cloud"
-        SSO_URL: "https://iam-keycloak-veeru-dev.apps.binero.06p407u4.kubeapp.cloud/auth/"
+        SECURE_GW_ENDPOINT: "https://gateway-veeru-dev.apps.devtest.41b996e9.kubeapp.cloud/"
+        SSO_URL: "https://iam-keycloak-veeru-dev.apps.devtest.41b996e9.kubeapp.cloud/auth/"
         SSO_REALM: "nordmart"
         SSO_CLIENT_ID: "stakater-nordmart-web"
         JAEGER_ENDPOINT: "http://jaeger-collector.istio-system:14268/api/traces"
