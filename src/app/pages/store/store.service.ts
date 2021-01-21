@@ -16,6 +16,14 @@ export const getProductRatingsAPI = (productId: string): Observable<ProductRatin
     .pipe(map((result) => result.response.body?.map((r: any) => deserialize(ProductRating, r))));
 };
 
+export const getProductPromotionAPI = (productId: string): Observable<ProductRating[]> => {
+  return httpClient.get(API.productPromotion, { params: { productId } }).pipe(
+    map((result) => {
+      return result.response;
+    }),
+  );
+};
+
 export const productSearchAPI = (query: string = ""): Observable<Product[]> => {
   return httpClient.get(API.productSearch, { queryParams: { criteria: query } }).pipe(
     map((results) => results.response.products?.map((p: any) => deserialize(Product, p))),
