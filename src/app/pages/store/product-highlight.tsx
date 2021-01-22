@@ -7,6 +7,7 @@ import {useParams} from "react-router";
 import {IMAGE_MAP} from "./product-images";
 import {RatingComponent} from "../review/rating-component";
 import {AddProduct} from "../cart/add-product";
+import {usePromotion} from "./usePromotion";
 
 
 interface IProductHighlightProps {
@@ -17,6 +18,7 @@ export const ProductHighlight = ({onClose}: IProductHighlightProps) => {
   const params = useParams<{ productId: string }>();
   const products = useSelector(STORE_SELECTORS.products);
   const selectedProduct = useMemo(() => products.find(p => p.itemId === params.productId), [products, params]);
+  const promotion = usePromotion(selectedProduct);
 
   return (
     <Modal open={true} onClose={onClose}>
@@ -42,9 +44,17 @@ export const ProductHighlight = ({onClose}: IProductHighlightProps) => {
               <RatingComponent product={selectedProduct}/>
             </Box>
 
-            <Typography gutterBottom variant="h2" component="h2" color={"error"}>
-              {selectedProduct?.price} $
-            </Typography>
+            <Box display="flex" justifyContent="space-between" alignItems="center">
+              <Typography gutterBottom variant="h2">
+                {selectedProduct?.price} $
+              </Typography>
+
+              {promotion?.active && (
+                <Typography gutterBottom variant="h6" color={"error"}>
+                  -{promotion.percentOff}% off
+                </Typography>
+              )}
+            </Box>
 
             <AddProduct product={selectedProduct}/>
           </CardContent>

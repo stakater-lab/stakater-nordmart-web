@@ -5,6 +5,7 @@ import { Observable, of } from "rxjs";
 import { httpClient } from "../../shared/services/client";
 import { API } from "../../shared/services/api";
 import { ProductRating } from "./ProductRating";
+import {Promotion} from "./Promotion";
 
 export const getProductsAPI = (): Observable<Product[]> => {
   return httpClient.get(API.products).pipe(map((result) => result.response?.map((p: any) => deserialize(Product, p))));
@@ -16,10 +17,10 @@ export const getProductRatingsAPI = (productId: string): Observable<ProductRatin
     .pipe(map((result) => result.response.body?.map((r: any) => deserialize(ProductRating, r))));
 };
 
-export const getProductPromotionAPI = (productId: string): Observable<ProductRating[]> => {
+export const getProductPromotionAPI = (productId: string): Observable<Promotion> => {
   return httpClient.get(API.productPromotion, { params: { productId } }).pipe(
     map((result) => {
-      return result.response;
+      return deserialize(Promotion, result.response);
     }),
   );
 };

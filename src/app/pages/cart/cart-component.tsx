@@ -76,8 +76,10 @@ export const CartComponent = () => {
                             <img height={100} src={IMAGE_MAP[si.product.name]}/>
                           </ListItemAvatar>
 
-                          <ListItemText primary={si.product.name}
-                                        secondary={`${si.quantity} x ${si.product.price?.toFixed(2)}$`}/>
+                          <ListItemText
+                            primary={si.product.name}
+                            secondary={`${si.quantity} x ${si.product.price?.toFixed(2)}$`}
+                          />
                           <ListItemSecondaryAction>
                             <Box display="flex" alignItems="center">
                               <Box>
