@@ -1,10 +1,10 @@
 # BUILD APP
-FROM node:15 as build
+FROM node:14 as build
 WORKDIR /app
 COPY . .
 
-#RUN npm install
-#RUN npm run build
+RUN npm install
+RUN npm run build
 
 ## SETUP NGINX
 FROM nginx
