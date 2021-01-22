@@ -6,4 +6,5 @@ export const API = {
   productInventory: "/api/inventory/{productId}",
   productPromotion: "/api/promotion/{productId}",
   shoppingCart: "/api/cart/{cartId}",
+  checkout: "/api/cart/checkout/{cartId}",
 };

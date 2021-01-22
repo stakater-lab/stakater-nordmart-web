@@ -2,7 +2,7 @@ import {Action} from "nested-combine-reducers/dist/types";
 import {Cart} from "./Cart";
 import {CallBack} from "../../typings";
 import {ApiAction} from "../../shared/redux/api-action";
-import {addToCartAPI, getCartActionAPI, removeFromCartAPI} from "./cart.service";
+import {addToCartAPI, checkoutAPI, getCartActionAPI, removeFromCartAPI} from "./cart.service";
 import {Epic} from "redux-observable";
 import {createAPIEpic} from "../../shared/redux/api-epic";
 import {createSelector} from "reselect";
@@ -97,6 +97,38 @@ export class RemoveFromCartFailedAction implements Action {
   }
 }
 
+
+export const CHECKOUT = "cart/checkout";
+export const CHECKOUT_SUCCESS = "cart/checkout/success";
+export const CHECKOUT_FAILED = "cart/checkout/failed";
+
+export class CheckoutAction extends ApiAction {
+  public type = CHECKOUT;
+  public api$ = checkoutAPI(this.cartId);
+
+  constructor(public cartId: string, public successCb?: CallBack) {
+    super();
+  }
+}
+
+export class CheckoutSuccessAction implements Action {
+  public type = CHECKOUT_SUCCESS;
+
+  constructor(public origin: CheckoutAction) {
+
+  }
+}
+
+export class CheckoutFailedAction implements Action {
+  public type = CHECKOUT_FAILED;
+
+  constructor(public error: Error) {
+
+  }
+}
+
+
+
 type ACTIONS = GetCartSuccessAction & AddToCartSuccessAction;
 
 interface ICartState {
@@ -118,6 +150,11 @@ export function cartReducer(state: ICartState = initialState, action: ACTIONS) {
         ...state,
         cart: action.cart
       }
+    case CHECKOUT_SUCCESS:
+      return {
+        ...state,
+        cart: undefined
+      }
     default:
       return state;
   }
@@ -131,5 +168,7 @@ export const CART_SELECTOR = {
 
 export const CART_EPICS: Epic[] = [
   createAPIEpic(GET_CART, GetCartSuccessAction, GetCartFailedAction),
-  createAPIEpic(ADD_TO_CART, AddToCartSuccessAction, AddToCartFailedAction)
+  createAPIEpic(ADD_TO_CART, AddToCartSuccessAction, AddToCartFailedAction),
+  createAPIEpic(REMOVE_FROM_CART, RemoveFromCartSuccessAction, RemoveFromCartFailedAction),
+  createAPIEpic(CHECKOUT, CheckoutSuccessAction, CheckoutFailedAction),
 ]

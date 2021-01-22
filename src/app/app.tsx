@@ -28,7 +28,7 @@ export const App = () => {
           <CartComponent/>
         </Route>
 
-        <Route path="/checkout">
+        <Route path="/checkout/completed">
           <CheckoutComponent/>
         </Route>
 

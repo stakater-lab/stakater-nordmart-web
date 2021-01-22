@@ -42,7 +42,7 @@ export const MuiOverride = createMuiTheme({
     button: {
       textTransform: "capitalize",
       whiteSpace: "nowrap",
-      fontFamily: "Montserrat, sans-serif",
+      fontFamily: "Raleway, sans-serif",
     },
     fontWeightRegular: 400,
     fontWeightBold: 700,
@@ -162,7 +162,7 @@ export const MuiOverride = createMuiTheme({
         "& svg": {
           marginRight: "0.25rem",
         },
-      },
+      }
     },
     MuiTouchRipple: {
       root: {

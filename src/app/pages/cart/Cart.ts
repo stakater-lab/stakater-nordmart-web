@@ -1,7 +1,7 @@
 import {Product} from "../store/Product";
 import {jsonProperty} from "../../shared/decorators/json-property";
 
-class CartItem {
+export class CartItem {
   @jsonProperty()
   price: number;
 
