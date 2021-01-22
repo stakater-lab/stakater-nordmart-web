@@ -41,9 +41,11 @@ export const ProductComponent = ({product}: IProductProps) => {
           </Typography>
         </Box>
 
-        <Typography variant={"subtitle2"}>
-          {product?.description}
-        </Typography>
+        <Box height={50} textOverflow="ellipsis">
+          <Typography variant={"subtitle2"}>
+            {product?.description}
+          </Typography>
+        </Box>
 
         <Box marginTop={4}>
           <AddProduct product={product}/>

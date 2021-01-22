@@ -6,6 +6,7 @@ import {Product} from "./Product";
 import {Epic} from "redux-observable";
 import {createAPIEpic} from "../../shared/redux/api-epic";
 import {createSelector} from "reselect";
+import sortBy from "lodash/sortBy";
 
 export const GET_PRODUCTS = "products/get";
 export const GET_PRODUCTS_SUCCESS = "products/get/success";
@@ -33,14 +34,6 @@ export class GetProductsFailedAction implements Action {
 
   constructor(public error: Error) {
 
-  }
-}
-
-const SET_SEARCH_QUERY = "products/query";
-export class SetSearchQueryAction implements Action {
-  public type = SET_SEARCH_QUERY;
-
-  constructor(public query: string) {
   }
 }
 
@@ -79,7 +72,7 @@ export function storeReducer(state: IStoreState = initialState, action: ACTIONS)
 export const STORE_REDUX_KEY = "store";
 const root = (state: any): IStoreState => state[STORE_REDUX_KEY];
 export const STORE_SELECTORS = {
-  products: createSelector(root, store => store.products || [])
+  products: createSelector(root, store => sortBy(store.products || [], "description"))
 }
 
 export const STORE_EPICS: Epic[] = [

@@ -6,7 +6,6 @@ import {API} from "../../shared/services/api";
 import {httpClient} from "../../shared/services/client";
 import {Observable, of} from "rxjs";
 import {catchError, map} from "rxjs/operators";
-import {useAPI} from "../store/useAPI";
 import {store} from "../../shared/redux/store";
 import {AddToCartAction, CART_SELECTOR} from "./cart.redux";
 import {useSelector} from "react-redux";
@@ -19,8 +18,8 @@ interface IAddProductProps {
 
 export const AddProduct = ({product}: IAddProductProps) => {
   const cart = useSelector(CART_SELECTOR.cart);
-  const $inventory = useMemo(() => product?.itemId ? productInventoryAPI(product.itemId) : of(null), [product]);
-  const [availability] = useAPI($inventory, null);
+
+  const availability = useMemo(() => product?.availability?.quantity, [product]);
 
   const addToCart = ({quantity}: any) => {
     if (!cart || !product || !quantity) {
@@ -38,7 +37,7 @@ export const AddProduct = ({product}: IAddProductProps) => {
 
   return (
     <Box display="flex" justifyContent={"space-between"} alignItems={"center"}>
-      <Form onSubmit={addToCart}>
+      <Form initialValues={{quantity: 1}} onSubmit={addToCart}>
         {({handleSubmit}) => (
           <form onSubmit={handleSubmit}>
             <Box display="flex" justifyContent={"stretch"} width={200}>
@@ -69,7 +68,7 @@ export const AddProduct = ({product}: IAddProductProps) => {
         <Typography color={"textSecondary"}>
           Inventory
         </Typography>
-        {availability === null && (
+        {!availability && (
           <Box color="error.main" display="flex" alignItems={"center"}>
             <Warning/>
             Unknown
@@ -86,6 +85,9 @@ export const AddProduct = ({product}: IAddProductProps) => {
         {availability && availability > 0 && (
           <Box color="success.main" display="flex" alignItems={"center"}>
             <Check/>
+            <Typography variant={"h6"} color={"secondary"}>
+              {availability} pcs
+            </Typography>
           </Box>
         )}
       </Box>

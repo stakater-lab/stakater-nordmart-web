@@ -21,8 +21,10 @@ import debounce from "lodash/debounce";
 import { productSearchAPI } from "../store/store.service";
 import { Subscription } from "rxjs";
 import {IMAGE_MAP} from "../store/product-images";
+import {useHistory} from "react-router";
 
 export const ProductSearch = () => {
+  const history = useHistory();
   const [anchorEl, setAnchorEl] = useState<any>(null);
   const [query, setQuery] = useState<string>("");
   const [results, setResults] = useState<Product[]>([]);
@@ -66,6 +68,10 @@ export const ProductSearch = () => {
     search(query);
   }, [query]);
 
+  const highLightProduct = (pId: string) => () => {
+    history.push(`/store/${pId}`);
+  }
+
   return (
     <>
       <SearchInput
@@ -76,7 +82,7 @@ export const ProductSearch = () => {
           </Box>
         }
         endAdornment={<Box minWidth="23px">{isLoading && <CircularProgress size={22} color={"primary"} />}</Box>}
-        placeholder="Search store"
+        placeholder="Search catalog"
         margin="dense"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
@@ -102,9 +108,9 @@ export const ProductSearch = () => {
                     <Paper elevation={1}>
                       <List>
                         {results.map((p) => (
-                          <ListItem button key={p.itemId}>
+                          <ListItem button key={p.itemId} onClick={highLightProduct(p.itemId)}>
                             <ListItemAvatar>
-                              <img src={IMAGE_MAP[p.name]}/>
+                              <img src={IMAGE_MAP[p.name]} height={36}/>
                             </ListItemAvatar>
                             <ListItemText>{p.name}</ListItemText>
                           </ListItem>

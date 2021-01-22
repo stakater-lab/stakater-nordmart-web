@@ -20,7 +20,7 @@ module.exports = (env, argv) => {
     },
     output: {
       path: outPath,
-      filename: "[name]-[hash].js",
+      filename: "[name]-[fullhash].js",
       chunkFilename: "[name]-[chunkhash].js",
     },
     resolve: {
@@ -121,7 +121,7 @@ module.exports = (env, argv) => {
     devServer: {
       port: 4200,
       contentBase: sourcePath,
-      https: true,
+      // https: true,
       inline: true,
       historyApiFallback: {
         disableDotRule: true,

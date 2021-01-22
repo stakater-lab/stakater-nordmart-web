@@ -4,11 +4,11 @@ services:
     build:
       context: .
       args:
-        NGINX_PORT: 8080
+        NGINX_PORT: 80
     environment:
       - SECURE_GW_ENDPOINT=https://gateway-veeru-dev.apps.devtest.41b996e9.kubeapp.cloud
       - SSO_URL=https://iam-keycloak-veeru-dev.apps.devtest.41b996e9.kubeapp.cloud/auth/
       - SSO_CLIENT_ID=stakater-nordmart-web
       - SSO_REALM=nordmart
     ports:
-      - "4200:8080"
+      - "4200:80"

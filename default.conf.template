@@ -1,36 +1,20 @@
 server {
     listen       ${NGINX_PORT};
     listen  [::]:${NGINX_PORT};
-    server_name  localhost;
-    rewrite_log     on;
-    access_log  /var/log/nginx/access.log;
-    error_log  /var/log/nginx/error.log notice;
-
-    # Enable browser caching for nginx, it caches all the formats mentioned
-    location ~* \.(js|css|png|jpg|jpeg|gif|ico)$ {
-        # proxy_set_header Host $host;
-        gzip_static on;
-        root   /var/www;
-        index  index.html index.htm;
-        try_files $uri $uri/ =404;
-        expires 5d;
-        log_not_found off;
-    }
+    # server_name  localhost;
 
     # serve front-end app
     location / {
-        gzip_static on;
         root   /var/www;
-        index  index.html index.htm;
-        try_files $uri $uri/ /index.html?$args;
+        index  index.html;
     }
 
     # redirect requests to /api slug to REST API
     location /api {
-      proxy_pass ${SECURE_GW_ENDPOINT}/api;
+        proxy_pass ${SECURE_GW_ENDPOINT};
     }
 
-    # redirect requests to /api slug to REST API
+    # Create keycloak
     location /keycloak.json {
       return 200 '{
         "auth-server-url":"${SSO_URL}",
@@ -40,11 +24,5 @@ server {
         "public-client":true,
         "confidential-port":0
       }';
-    }
-
-    # redirect server error pages to the static page /50x.html
-    error_page   500 502 503 504  /50x.html;
-    location = /50x.html {
-        root   /var/www;
     }
 }
