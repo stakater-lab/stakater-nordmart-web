@@ -30,6 +30,18 @@ server {
       proxy_pass ${SECURE_GW_ENDPOINT}/api;
     }
 
+    # redirect requests to /api slug to REST API
+    location /keycloak.json {
+      return 200 '{
+        "auth-server-url":"${SSO_URL}",
+        "realm":"${SSO_REALM}",
+        "resource":"${SSO_CLIENT_ID}",
+        "ssl-required":"external",
+        "public-client":true,
+        "confidential-port":0
+      }';
+    }
+
     # redirect server error pages to the static page /50x.html
     error_page   500 502 503 504  /50x.html;
     location = /50x.html {

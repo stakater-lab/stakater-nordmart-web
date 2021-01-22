@@ -2,7 +2,7 @@ const webpack = require("webpack");
 const path = require("path");
 
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+const {CleanWebpackPlugin} = require("clean-webpack-plugin");
 const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 const proxy = require("./proxy.config");
 
@@ -88,26 +88,17 @@ module.exports = (env, argv) => {
     },
 
     plugins: [
-      new webpack.DefinePlugin({
-        PRODUCTION: !isDev,
-        SECURE_GW_ENDPOINT: JSON.stringify(env.SECURE_GW_ENDPOINT),
-        PORT: JSON.stringify(env.PORT),
-        SSO_URL: JSON.stringify(env.SSO_URL),
-        SSO_REALM: JSON.stringify(env.SSO_REALM),
-        SSO_CLIENT_ID: JSON.stringify(env.SSO_CLIENT_ID)
+      new webpack.EnvironmentPlugin({
+        PRODUCTION: !isDev
       }),
-      !isDev &&
-        new BundleAnalyzerPlugin({
-          analyzerMode: "static",
-        }),
       !isDev && new CleanWebpackPlugin(),
       new HtmlWebpackPlugin({
         hash: true,
         template: "./index.html",
         favicon: "./favicon.ico",
         meta: {
-          charset: { charset: "utf-8" },
-          "x-ua-compatible": { "http-equiv": "x-ua-compatible", content: "ie=edge" },
+          charset: {charset: "utf-8"},
+          "x-ua-compatible": {"http-equiv": "x-ua-compatible", content: "ie=edge"},
           viewport: "width=device-width, initial-scale=1, shrink-to-fit=no",
           manifest: "./site.webmanifest",
         },

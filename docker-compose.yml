@@ -4,14 +4,11 @@ services:
     build:
       context: .
       args:
-        SECURE_GW_ENDPOINT: https://gateway-veeru-dev.apps.devtest.41b996e9.kubeapp.cloud
-        SSO_URL: https://iam-keycloak-veeru-dev.apps.devtest.41b996e9.kubeapp.cloud/auth
-        SSO_CLIENT_ID: stakater-nordmart-web
-        SSO_REALM: nordmart
         NGINX_PORT: 8080
     environment:
-      - NGINX_PORT=8080
       - SECURE_GW_ENDPOINT=https://gateway-veeru-dev.apps.devtest.41b996e9.kubeapp.cloud
-      - SSO_URL=https://iam-keycloak-veeru-dev.apps.devtest.41b996e9.kubeapp.cloud/auth
+      - SSO_URL=https://iam-keycloak-veeru-dev.apps.devtest.41b996e9.kubeapp.cloud/auth/
+      - SSO_CLIENT_ID=stakater-nordmart-web
+      - SSO_REALM=nordmart
     ports:
-      - "8080:8080"
+      - "4200:8080"
