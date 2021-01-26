@@ -57,17 +57,3 @@ To deploy app inside a docker container
   ```bash
   docker-compose build && docker-compose up
   ```
-
-### Helm Charts
-
-#### Pre-requisites
-
-Helm operator needs to to be running inside the cluster. Helm operator is deployed by Stakater Global Stack, deployment guidelines are provided in this [link](https://playbook.stakater.com/content/processes/bootstrapping/deploying-stack-on-azure.html)
-
-#### Helm chart deployment
-
-To create helm release of this application using the command given below:
-
-  ```bash
-  kubectl apply -f [helm-release](https://github.com/stakater-lab/nordmart-dev-apps/blob/master/releases/web-helm-release.yaml).yaml -n <namespace-name>
-  ```
