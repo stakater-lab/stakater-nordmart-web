@@ -2,7 +2,6 @@ import React from "react";
 import {AppBar, Box, Button, Container, Toolbar, Typography} from "@material-ui/core";
 import StakaterLogo from "../../assets/img/stakater-icon.svg";
 import {AccountCircle, ExitToApp, Store} from "@material-ui/icons";
-import {ProductSearch} from "../pages/search/product-search";
 import {authService} from "../auth/keycloak.service";
 import {store} from "../shared/redux/store";
 import {LoginAction, LogOutAction} from "../auth/auth.redux";
@@ -28,10 +27,6 @@ export const TopMenu = () => {
             <StakaterLogo height={24}/>
             <Typography variant={"h5"}>Stakater</Typography>
             <Typography variant={"caption"}>Nordmart</Typography>
-          </Box>
-
-          <Box color="white" marginRight={1}>
-            <ProductSearch/>
           </Box>
 
           <NavMenu menu={{

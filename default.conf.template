@@ -1,6 +1,6 @@
 server {
-    listen       ${NGINX_PORT};
-    listen  [::]:${NGINX_PORT};
+    listen       8080;
+    listen  [::]:8080;
     # server_name  localhost;
 
     # serve front-end app
@@ -24,5 +24,9 @@ server {
         "public-client":true,
         "confidential-port":0
       }';
+    }
+
+    location /health {
+        return 200 'ok';
     }
 }

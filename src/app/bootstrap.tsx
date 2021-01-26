@@ -12,11 +12,16 @@ import {authService} from "./auth/keycloak.service";
 import {CART_EPICS, CART_REDUX_KEY, cartReducer} from "./pages/cart/cart.redux";
 
 const InitKeycloak = lazy(async () => {
-  await authService.checkSSSO();
-  if (authService.keyCloak.authenticated) {
-    await authService.keyCloak.loadUserInfo();
-    store.dispatch(new LoginSuccessAction(new LoginAction(), authService.userInfo!));
+  try {
+    await authService.checkSSSO();
+    if (authService.keyCloak.authenticated) {
+      await authService.keyCloak.loadUserInfo();
+      store.dispatch(new LoginSuccessAction(new LoginAction(), authService.userInfo!));
+    }
+  } catch (e) {
+
   }
+
   return import("./app");
 });
 
