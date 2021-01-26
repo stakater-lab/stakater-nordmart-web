@@ -17,7 +17,7 @@ RUN sed -i.bak 's/listen\(.*\)80;/listen 8080;/' /etc/nginx/conf.d/default.conf
 RUN sed -i.bak 's/^user/#user/' /etc/nginx/nginx.conf
 
 COPY --from=build /app/dist /var/www
-COPY --from=build /app/default.conf.template /etc/nginx/templates/
+COPY --from=build /app/deploy/default.conf.template /etc/nginx/templates/
 
 EXPOSE 8080
 
