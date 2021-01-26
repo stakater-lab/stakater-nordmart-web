@@ -1,0 +1,32 @@
+server {
+    listen       8080;
+    listen  [::]:8080;
+    # server_name  localhost;
+
+    # serve front-end app
+    location / {
+        root   /var/www;
+        index  index.html;
+    }
+
+    # redirect requests to /api slug to REST API
+    location /api {
+        proxy_pass ${SECURE_GW_ENDPOINT};
+    }
+
+    # Create keycloak
+    location /keycloak.json {
+      return 200 '{
+        "auth-server-url":"${SSO_URL}",
+        "realm":"${SSO_REALM}",
+        "resource":"${SSO_CLIENT_ID}",
+        "ssl-required":"external",
+        "public-client":true,
+        "confidential-port":0
+      }';
+    }
+
+    location /health {
+        return 200 'ok';
+    }
+}

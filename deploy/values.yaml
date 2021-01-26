@@ -15,14 +15,14 @@ application:
     imagePullSecrets: nexus-docker-config-forked
     envFrom:
     - type: configmap
-      name: ""    
+      name: ""
     additionalLabels:
       appCategory: "frontend"
     annotations:
     volumes: {}
     image:
       repository: stakater/stakater-nordmart-web
-      tag: v0.0.7  
+      tag: v0.0.7
     probes:
       readinessProbe:
         failureThreshold: 3
@@ -55,4 +55,4 @@ application:
       enabled: true
   route:
     enabled: true
-  
+

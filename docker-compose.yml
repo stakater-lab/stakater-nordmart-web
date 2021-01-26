@@ -1,0 +1,12 @@
+version: "3.9"
+services:
+  webapp:
+    build:
+      context: .
+    environment:
+      - SECURE_GW_ENDPOINT=https://gateway-veeru-dev.apps.devtest.41b996e9.kubeapp.cloud
+      - SSO_URL=https://iam-keycloak-veeru-dev.apps.devtest.41b996e9.kubeapp.cloud/auth/
+      - SSO_CLIENT_ID=stakater-nordmart-web
+      - SSO_REALM=nordmart
+    ports:
+      - "4200:8080"

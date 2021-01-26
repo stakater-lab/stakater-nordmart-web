@@ -1,0 +1,40 @@
+{
+  "compilerOptions": {
+    "sourceMap": true,
+    "target": "es5",
+    "jsx": "react",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "resolveJsonModule": true,
+    "declaration": false,
+    "removeComments": true,
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "strictNullChecks": true,
+    "strict": true,
+    "strictPropertyInitialization": false,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "lib": [
+      "es6",
+      "es7",
+      "dom"
+    ]
+  },
+  "include": [
+    "./src/**/*"
+  ],
+  "exclude": [
+    "**/__mocks__",
+    "**/__snapshots__",
+    "**/jest.helpers.tsx",
+    "**/*.spec.ts",
+    "**/*.spec.tsx",
+    "**/*.cafe.ts",
+    "**/*.po.ts"
+  ]
+}

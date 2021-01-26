@@ -35,7 +35,8 @@ To run the application locally first install all the dependencies by executing
 npm install
 ```
 
-and then start the application using:
+You will have to change ```proxy.config.js``` reverse proxy to correct ```api``` and ```keycloak``` server address.
+Then start the application using:
 
 ```bash
 npm start
@@ -44,25 +45,17 @@ npm start
 ### Docker
 
 To deploy app inside a docker container
-
-* Create a network if it doesn't already exist by executing
-
-  ```bash
-  docker network create --driver bridge nordmart-apps
-  ```
-
-* Next build the image using
-
-  ```bash
-  docker build -t web .
-  ```
-
-* Finally run the image by executing
+* Setup ```api``` and ```keycloak``` env variables in ```docker-compose.yml```
+```
+--env SECURE_GW_ENDPOINT={Secure gateway service endpoint}
+--env SSO_URL= {Keycloak authentication URL}
+--env SSO_REALM= {Keycloak realm name}
+--env SSO_CLIENT_ID= {Keycloak client}
+```
+* Create aand run the container
 
   ```bash
-  docker run -d --name web --network nordmart-apps -e PORT=4200 -e SECURE_GW_ENDPOINT="gateway:8080" \
-  -e SSO_URL="http://keycloak-security.DOMAIN:8180/auth" -e SSO_REALM="nordmart" -e SSO_CLIENT_ID="stakater-nordmart-web" \
-   -p 4200:4200 web
+  docker-compose build && docker-compose up
   ```
 
 ### Helm Charts

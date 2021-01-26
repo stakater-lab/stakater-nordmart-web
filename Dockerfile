@@ -1,28 +1,25 @@
-################
-# Build Image
-################
-FROM node:8.9.3-alpine AS builder
-# set working directory
-RUN mkdir -p /usr/src/app
-WORKDIR /usr/src/app
-# add `/usr/src/app/node_modules/.bin` to $PATH
-ENV PATH /usr/src/app/node_modules/.bin:$PATH
-RUN apk update && apk upgrade && \
-    apk add --no-cache bash git openssh
-COPY . /usr/src/app/
-RUN chown 1001:1001 /usr/src/app && \
-    mkdir /.npm && chown 1001:1001 /.npm && \
-    mkdir /.config && chown 1001:1001 /.config && \
-    mkdir /.cache && chown 1001:1001 /.cache && \
-    mkdir /.local && chown 1001:1001 /.local
-USER 1001
-RUN npm install
-
-################
-# Run Image
-################
-FROM node:8.9.3-alpine
-COPY --from=builder /usr/src/app /app
+# BUILD APP
+FROM node:14 as build
 WORKDIR /app
-EXPOSE 8080/tcp
-CMD [ "npm", "start"]
+COPY . .
+
+RUN npm ci
+RUN npm run build
+
+## SETUP NGINX
+FROM nginx
+# support running as arbitrary user which belogs to the root group
+RUN chmod g+rwx /var/cache/nginx /var/run /var/log/nginx /etc/nginx/conf.d
+RUN chmod 777 -R /etc/nginx/conf.d/default.conf
+# users are not allowed to listen on priviliged ports
+RUN sed -i.bak 's/listen\(.*\)80;/listen 8080;/' /etc/nginx/conf.d/default.conf
+# comment user directive as master process is run as user in OpenShift anyhow
+RUN sed -i.bak 's/^user/#user/' /etc/nginx/nginx.conf
+
+COPY --from=build /app/dist /var/www
+COPY --from=build /app/deploy/default.conf.template /etc/nginx/templates/
+
+EXPOSE 8080
+
+# START SERVER
+CMD ["nginx", "-g", "daemon off;"]
