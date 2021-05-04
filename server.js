@@ -1,7 +1,9 @@
 const express = require('express');
 const server = express();
-const path = require("path");
 const {createProxyMiddleware} = require('http-proxy-middleware');
+
+server.set("keepAliveTimeout", 61 * 1000);
+server.set("headersTimeout", 65 * 1000);
 
 server.get("/keycloak.json", (req, res) => {
   res.json({
