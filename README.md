@@ -57,4 +57,3 @@ To deploy app inside a docker container
   ```bash
   docker-compose build && docker-compose up
   ```
-  
