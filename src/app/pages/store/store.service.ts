@@ -14,7 +14,7 @@ export const getProductsAPI = (): Observable<Product[]> => {
 export const getProductRatingsAPI = (productId: string): Observable<ProductRating[]> => {
   return httpClient
     .get(API.productRatings, { params: { productId } })
-    .pipe(map((result) => result.response.body?.map((r: any) => deserialize(ProductRating, r))));
+    .pipe(map((result) => result.response?.map((r: any) => deserialize(ProductRating, r))));
 };
 
 export const getProductPromotionAPI = (productId: string): Observable<Promotion> => {
