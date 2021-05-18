@@ -82,7 +82,7 @@ export const ProductSearch = () => {
           </Box>
         }
         endAdornment={<Box minWidth="23px">{isLoading && <CircularProgress size={22} color={"primary"} />}</Box>}
-        placeholder="Search Catalog"
+        placeholder="Search"
         margin="dense"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
